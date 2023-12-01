@@ -1,7 +1,7 @@
 
-# SDR-STK Development Setup Instructions
+# STK Sweep Development Setup Instructions
 
-This README provides detailed instructions on how to set up the SDR-STK development environment. Follow these steps to get started.
+This README provides detailed instructions on how to set up the STK Sweep development environment. Follow these steps to get started.
 
 ## Prerequisites
 

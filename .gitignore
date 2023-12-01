@@ -15,7 +15,7 @@ __pycache__/
 .en
 
 # Depricated files
-.oldv
+.old
 
 # Database files (SQLite, PostgreSQL, etc.)
 *.db
