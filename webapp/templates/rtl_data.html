@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>STK Sweep</title>
+</head>
+
+<body>
+
+    <div class="flex-container">
+        <div class="sidebar">
+
+            <h1 class="titleSweep">STK Sweep</h1>
+
+            <hr>
+
+            <!-- RTL Power Settings -->
+            <div class="settings">
+                <label for="frequencyRange">Frequency Range in MHz:</label>
+
+                <div class="frequencyRangeContainer">
+                    <input type="text" id="frequencyRangeMin" placeholder="e.g., 88">
+                    <input type="text" id="frequencyRangeMax" placeholder="e.g., 108">
+                </div>
+                
+                <label for="gain">Gain:</label>
+                <input type="text" id="gain" placeholder="e.g., 10 or 'automatic'">
+
+                <label for="fftBinSize">FFT Bin Size:</label>
+                <input type="text" id="fftBinSize" placeholder="e.g., 12k">
+
+                <button id="startStopScan" class="startButton">Start Scan</button>
+            </div>
+
+            <hr>
+
+            <!-- Sliders -->
+            <div class="sliders">
+                <label for="minDB">Min dB: <span id="sliderMinValue">-50</span></label>
+                <input type="range" class="slider" id="minDB" min="-100" max="0" value="-50" step="1">
+
+                <label for="maxDB">Max dB: <span id="sliderMaxValue">0</span></label>
+                <input type="range" class="slider" id="maxDB" min="-20" max="10" value="0" step="1">
+
+                <label for="thresholdSlider">Activity Threshold: <span id="thresholdValue">0</span></label>
+                <input type="range" class="slider" id="thresholdSlider" min="-50" max="10" value="-20" step="1">
+                
+            </div>
+
+            <hr>
+
+            <div class="freqInfo">
+                <label>Frequency::</label><br>
+                <span id="infoBoxFreq">0</span> MHz<br>
+
+                <br>
+
+                <label>Time::</label><br>
+                <span id="infoBoxTime">0</span> sec
+            </div>
+
+            <hr>
+
+            <div class="rtlTCPInfo">
+                <label for="rtlTCPIP">IP:</label>
+                <input type="text" id="rtlTCPIP" placeholder="127.0.0.1">
+
+                <label for="rtlTCPPort">Port:</label>
+                <input type="text" id="rtlTCPPort" placeholder="6969">
+
+                <button id="startRTLTCP" class="startTCPButton">Start TCP Server</button>
+
+                <br>
+
+                <label for="currentTCPFreq">Current Center Frequency:</label>
+                <div class="currentTCPFreqBox">
+                    <span id="currentTCPFreq">0</span> MHz
+                </div>
+            </div>
+
+            <hr>
+
+            <div>
+                
+            </div>
+        </div>
+
+        
+        <div id="canvasContainer" class="rfContainer">
+            <div id="liveOverlayContainer">
+                <div id="liveOverlay"></div>
+            </div>
+            <canvas id="activityBar"></canvas>
+            <hr id="activityBreak">
+            <canvas id="waterfall"></canvas>
+
+            <!-- <img id="testIMG" src="{{ url_for('static', filename='img/frs0.png') }}" alt="Example Image"> -->
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/rtlDataDisplay.js') }}"></script>
+</body>
+</html>
