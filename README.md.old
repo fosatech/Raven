@@ -1,0 +1,26 @@
+# SDR-STK Development Setup Instruction
+
+This README provides detailed instructions on how to set up the SDR-STK development environment. Follow these steps to get started.
+
+## Prerequisites
+
+Before proceeding, ensure you have the following installed on your system:
+- Python 3
+- `pip` (Python package manager)
+- `unzip` utility
+
+## Installation and Setup
+
+**Unzip the `SDR-STK-dev.zip` file to extract the source code.**
+
+```bash
+unzip SDR-STK-dev.zip
+cd SDR-STK-dev/
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+flask run
+```
+
+- Go to `localhost:5000/rtl_data` in your browser
+- Enter your start and stop frequencies, and press **"Start Scan"**.

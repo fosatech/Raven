@@ -12,7 +12,10 @@ __pycache__/
 *.log
 
 # Environment variables
-.env
+.en
+
+# Depricated files
+.oldv
 
 # Database files (SQLite, PostgreSQL, etc.)
 *.db
