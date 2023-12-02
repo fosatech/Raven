@@ -6,6 +6,7 @@ import argparse
 import subprocess
 import time
 import sys
+import signal
 
 
 class Forward:
@@ -19,6 +20,9 @@ class Forward:
         except Exception as e:
             print(e)
             return False
+
+    def shutdown(self):
+        self.forward.close()
 
 class Server:
 
@@ -97,6 +101,10 @@ class Server:
         try:
             self.keep_running = False
 
+            self.tcp_process.send_signal(signal.SIGINT)
+            self.tcp_process.kill()
+            self.tcp_process.terminate()
+
             if self.server:
                 self.server.close()
                 print("[*] Server Closed")
@@ -105,10 +113,8 @@ class Server:
                 self.forward.shutdown()
                 print("[*] Forward Closed")
 
-            self.tcp_process.kill()
-            self.tcp_process.terminate()
 
-            self.tcp_proxy_server.join()
+            # self.tcp_proxy_server.join()
 
             print("[*] Killed all")
 

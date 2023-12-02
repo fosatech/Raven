@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect(window.location.protocol + '//' + window.location.hostname + ':5000');
 
 const startButton = document.getElementById("startStopScan");
 

@@ -1,1 +1,1 @@
-FLASK_APP=stk_sweep
+FLASK_APP=run

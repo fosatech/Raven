@@ -45,7 +45,7 @@ Before proceeding, ensure you have the following installed on your system:
 6. **Run the Flask Application:**
    Start the Flask application.
    ```bash
-   flask run
+   python stk_sweep.py
    ```
 
 ## Usage
@@ -59,6 +59,18 @@ For any issues or questions, please refer to the project's documentation or cont
 ## Contributing
 
 Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.md` file for guidelines on how to contribute.
+
+## To-Do
+
+**Bug Fixes:**
+- Frontend breaks with really wide scan
+- Buttons don't turn red on `stop`
+- Exception catches on backend
+- Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
+
+**Aditional Features:**
+- Custom wideband backend
+- Zoom and scroll relative to pagecenter/mouse cursor
 
 ---
 

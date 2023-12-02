@@ -13,6 +13,8 @@ python-dotenv==1.0.0
 python-engineio==4.8.0
 python-socketio==5.10.0
 simple-websocket==1.0.0
+uWSGI==2.0.23
+waitress==2.1.2
 werkzeug==3.0.1
 wsproto==1.2.0
 zipp==3.17.0
