@@ -7,20 +7,19 @@ This README provides detailed instructions on how to set up the STK Sweep server
 
 Before proceeding, ensure you have the following installed on your system:
 - Python 3
-- `pip` (Python package manager)
-- `unzip` utility
+- `pip` + `virtualenv`
 - `rtl-sdr` package, including `rtl_tcp` and `rtl_power`
 
 ## Installation and Setup
 
-1. **Clone the Source Code**.
+1. **Clone the Source Code**
    ```bash
    git clone https://github.com/fosatech/STK-Sweep.git
    ```
 
 2. **Navigate to the Project Directory**
    ```bash
-   cd SDR-STK-dev/
+   cd STK-Sweep/
    ```
 
 3. **Create a Python Virtual Environment:**
