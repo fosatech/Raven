@@ -102,6 +102,7 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 
 **Aditional Features:**
+- Convince entire population of earth to use Linux || Add Windoze support
 - Custom wideband backend
 - Zoom and scroll relative to page center/mouse cursor
 - Add documentation
