@@ -10,7 +10,7 @@ current_server = None
 @app.route('/')
 @app.route('/index')
 def index():
-	return "Hello, World!"
+	return "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 # @app.route('/favicon.ico')
 # def fav_icon():

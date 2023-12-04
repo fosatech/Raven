@@ -1,7 +1,7 @@
 
-# STK Sweep Development Setup Instructions
+# STK Sweep Setup Instructions
 
-This README provides detailed instructions on how to set up the STK Sweep development environment. Follow these steps to get started.
+This README provides detailed instructions on how to set up the STK Sweep server, as well as usage documentation. Follow these steps to get started.
 
 ## Prerequisites
 
@@ -9,6 +9,7 @@ Before proceeding, ensure you have the following installed on your system:
 - Python 3
 - `pip` (Python package manager)
 - `unzip` utility
+- `rtl-sdr` package, including `rtl_tcp` and `rtl_power`
 
 ## Installation and Setup
 
@@ -52,6 +53,10 @@ Before proceeding, ensure you have the following installed on your system:
 
 After completing the setup, the Flask application will be running on your local server. You can access it via `localhost:5000/rtl_data`.
 
+**Wideband Setting**
+
+![wideband settings](readme/wideband-settings.png)
+
 ## Support
 
 For any issues or questions, please refer to `<coming_soon>` documentation or contact us.
@@ -73,6 +78,7 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 - Zoom and scroll relative to page center/mouse cursor
 - Add documentation
 - Add license
+- Add usage docs
 
 
 ---
