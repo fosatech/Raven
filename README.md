@@ -15,7 +15,7 @@ Before proceeding, ensure you have the following installed on your system:
 1. **Unzip the Source Code:**
    Unzip the `SDR-STK-dev.zip` file to extract the source code.
    ```bash
-   unzip SDR-STK-dev.zip
+   unzip STK_SWEEP-dev.zip
    ```
 
 2. **Navigate to the Project Directory:**
@@ -54,7 +54,7 @@ After completing the setup, the Flask application will be running on your local 
 
 ## Support
 
-For any issues or questions, please refer to the project's documentation or contact the support team.
+For any issues or questions, please refer to `<coming_soon>` documentation or contact us.
 
 ## Contributing
 
@@ -65,13 +65,16 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 **Bug Fixes:**
 - Frontend breaks with really wide scan
 - Buttons don't turn red on `stop`
-- Exception catches on backend
+- ~~Exception catches on backend~~
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 
 **Aditional Features:**
 - Custom wideband backend
-- Zoom and scroll relative to pagecenter/mouse cursor
+- Zoom and scroll relative to page center/mouse cursor
+- Add documentation
+- Add license
+
 
 ---
 
-Thank you for participating in the SDR-STK project development.
+Thank you for participating in the STK Sweep project development.

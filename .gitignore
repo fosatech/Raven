@@ -17,6 +17,9 @@ __pycache__/
 # Depricated files
 *.old
 
+# Ignore ignorance
+*.gitignore
+
 # Database files (SQLite, PostgreSQL, etc.)
 *.db
 *.sqlite

@@ -1,7 +1,7 @@
 from webapp import app, socketio
 from .rtl_power_util import Wideband
 from .rtl_tcp_server import Server, Forward
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, send_from_directory
 
 
 current_wideband = None
@@ -11,6 +11,10 @@ current_server = None
 @app.route('/index')
 def index():
 	return "Hello, World!"
+
+# @app.route('/favicon.ico')
+# def fav_icon():
+# 	return 
 
 
 @app.route('/rtl_data')
