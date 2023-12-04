@@ -13,38 +13,32 @@ Before proceeding, ensure you have the following installed on your system:
 
 ## Installation and Setup
 
-1. **Unzip the Source Code:**
-   Unzip the `SDR-STK-dev.zip` file to extract the source code.
+1. **Clone the Source Code**.
    ```bash
    git clone https://github.com/fosatech/STK-Sweep.git
    ```
 
-2. **Navigate to the Project Directory:**
-   Change your current directory to the `SDR-STK-dev` folder.
+2. **Navigate to the Project Directory**
    ```bash
    cd SDR-STK-dev/
    ```
 
 3. **Create a Python Virtual Environment:**
-   Set up a Python virtual environment to manage dependencies.
    ```bash
    python3 -m venv venv
    ```
 
 4. **Activate the Virtual Environment:**
-   Activate the newly created virtual environment.
    ```bash
    source venv/bin/activate
    ```
 
 5. **Install Dependencies:**
-   Install the required Python packages using `pip`.
    ```bash
    python -m pip install -r requirements.txt
    ```
 
 6. **Run the Flask Application:**
-   Start the Flask application.
    ```bash
    python stk_sweep.py
    ```
