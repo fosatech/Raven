@@ -16,7 +16,7 @@ Before proceeding, ensure you have the following installed on your system:
 1. **Unzip the Source Code:**
    Unzip the `SDR-STK-dev.zip` file to extract the source code.
    ```bash
-   unzip STK_SWEEP-dev.zip
+   git clone https://github.com/fosatech/STK-Sweep.git
    ```
 
 2. **Navigate to the Project Directory:**
@@ -98,7 +98,7 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 **Bug Fixes:**
 - Frontend breaks with really wide scan
 - Buttons don't turn red on `stop`
-- ~~Exception catches on backend~~
+- Exception catches on backend
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 
 **Aditional Features:**
