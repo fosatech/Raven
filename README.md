@@ -55,13 +55,13 @@ After completing the setup, the Flask application will be running on your local 
 
 1. Enter the desired wideband scan range and bin size and start the scan.
 
-2. Start the `rtl_tcp` server with the desired port and IP, and connect to it with your SDR software
+2. Start the `rtl_tcp` server with the desired port and IP, and connect to it with your SDR software.
 
 3. `ctrl + left click` on a frequency and STK Sweep will automatically tune your 2nd SDR to it.
 
 ## Settings and Configuration
 
-**Wideband Settings**
+**Wideband Settings:**
 
 Enter the freqency range, gain, and bin size.
 
@@ -70,7 +70,7 @@ Enter the freqency range, gain, and bin size.
 
 ![wideband settings](readme/wideband-settings.png)
 
-**Waterfall Display Settings**
+**Waterfall Display Settings:**
 
 This sets the color profile for each new row of the waterfall. Future versions will update the entire waterfall color scheme.
 
@@ -78,11 +78,11 @@ The `Activity Threshold` slider sets the threshold for the activity bar.
 
 ![waterfall display settings](readme/waterfall-settings.png)
 
-**RTL TCP Settings**
+**RTL TCP Settings:**
 
 This is for starting the backend `rtl_tcp` server. `STK Sweep` has a TCP proxy on the backend in order to be able to update the center frequency of the 2nd RTL-SDR dongle.
 
-![rtl_tcp settings](readme/rtl_tcp-settings.png)
+![rtl_tcp settings](readme/rtl-tcp-settings.png)
 
 
 ## Support
