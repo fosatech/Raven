@@ -8,6 +8,8 @@ import time
 import sys
 import signal
 
+from gevent import spawn
+
 
 class Forward:
     def __init__(self):
@@ -95,6 +97,8 @@ class Server:
         self.tcp_proxy_server = threading.Thread(target=self.server_start, name="Inject")
         self.tcp_proxy_server.start()
 
+        # spawn(self.server_start)
+
 
     def kill_all(self):
 
@@ -170,6 +174,7 @@ class Server:
     def send_command(self, param):
 
         cmd = struct.pack(">BI", self.SET_FREQUENCY, param)
+        print("[*] Sent")
         self.forward.send(cmd)
 
 

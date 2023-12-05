@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 from flask_cors import CORS
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
 
-from webapp import routes
+from . import routes

@@ -38,6 +38,7 @@ Before proceeding, ensure you have the following installed on your system:
    ```
 
 6. **Run the Flask Application:**
+   Note: this currently starts the Flask development server.
    ```bash
    python stk_sweep.py
    ```
@@ -93,11 +94,13 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 - Buttons don't turn red on `stop`
 - Exception catches on backend
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
+- Implement proper server like `gunicorn` without `rtl_tcp` proxy lagging
 
 **Aditional Features:**
 - Convince entire population of earth to use Linux || Add Windoze support
 - Custom wideband backend
 - Zoom and scroll relative to page center/mouse cursor
+- Save scan files to disk
 - Add documentation
 - Add license
 - Add usage docs

@@ -1,14 +1,12 @@
-# import socket
-# import select
-# import struct
-# import argparse
-
 import subprocess
 import threading
 import sys
 import time
+import queue
 
-from webapp import socketio
+from . import socketio
+
+data_queue = queue.Queue()
 
 class Wideband:
 
@@ -41,6 +39,7 @@ class Wideband:
 		
 		self.async_stream_data()
 
+
 	def async_stream_data(self):
 
 		"""Starts the rtl_power process"""
@@ -57,12 +56,12 @@ class Wideband:
 
 		"""This function contains all of the logic for selecting peaks from the rtl_power input."""
 
-		print(self.power_args)
+		# print(self.power_args)
 		self.power_process = subprocess.Popen(self.power_args, stdout=subprocess.PIPE)
-		print("[*] New rtl_power instance started")
 
 		low_freq = 0
 		full_scan = []
+
 
 		while self.keep_running:
 			output = self.power_process.stdout.readline()
@@ -81,13 +80,14 @@ class Wideband:
 					full_scan += wideband_out[6:]
 
 				else:
-					socketio.emit('new_data', {'data': full_scan})
+					socketio.emit('new_data', {'data': full_scan}, namespace='/')
 					full_scan = []
 					full_scan += wideband_out[6:]
 
 			pass
 
 		print("[!] Current rtl_power instance terminated")
+
 
 	def stop_data_stream(self):
 		self.power_process.terminate()

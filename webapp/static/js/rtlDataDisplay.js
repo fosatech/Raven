@@ -1,4 +1,5 @@
-const socket = io.connect(window.location.protocol + '//' + window.location.hostname + ':5000');
+const socket = io.connect('http://' + window.location.host + '');
+console.log(window.location.host)
 
 const startButton = document.getElementById("startStopScan");
 
@@ -224,14 +225,12 @@ function ctrlClickHandler(event) {
             .then(response => response.json())
             .then(data => {
                 // Handle data
-                console.log(data);
 
                 const totalFreq = freqEnd - freqStart;
 
                 const rtlWidth = (2.4 / totalFreq * 100);
 
                 const viewWindowLocation  = ( ( (currentTCPFreq.textContent - 1.2) - freqStart ) / totalFreq * 100);
-                console.log(viewWindowLocation);
                 liveWindow.style.left = `${viewWindowLocation}%`
                 liveWindow.style.width = `${rtlWidth}%`
             })
@@ -295,10 +294,6 @@ function drawRow(dBValues) {
     const imgData = ctx.createImageData(canvas.width, 1);
     const activityData = activityCtx.createImageData(activityBar.width, 1);
 
-    // const tempCanvas = document.createElement('canvas');
-    // const tempCtx = tempCanvas.getContext('2d');
-
-
     dBValues.forEach((dB, index) => {
         const color = dBToColor(dB);
 
@@ -315,21 +310,13 @@ function drawRow(dBValues) {
         activityData.data[index * 4] = activeColor[0];         // Red
         activityData.data[index * 4 + 1] = activeColor[1];     // Green
         activityData.data[index * 4 + 2] = activeColor[2];     // Blue
-        activityData.data[index * 4 + 3] = activeColor[3];          // Alpha
+        activityData.data[index * 4 + 3] = activeColor[3];     // Alpha
     })
-
-    // tempCtx.putImageData(activityData, 0, 0);
 
     activityCtx.putImageData(activityData, 0, 0);
 
     ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 1, canvas.width, canvas.height)
     ctx.putImageData(imgData, 0, 0);
-
-    // Draw the new row at the top
-
-    // Shift the existing image data one row down
-    // const existingData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    // ctx.putImageData(existingData, 0, 1);
 }
 
 
@@ -446,7 +433,7 @@ function updateCanvasTransform() {
 let setLength = true;
 let newData = false;
 
-socket.on('new_data', function(data) {
+socket.on('new_data', function(dataIn) {
 
     // set scan statue to true; just incase a scan is already going when webpage is loaded
     if (ongoingScan == false) {
@@ -454,7 +441,7 @@ socket.on('new_data', function(data) {
         buttonUpdate(startButton, "Stop Scan", ongoingScan);
     }
 
-    const parsedData = data.data;
+    const parsedData = dataIn.data;
     // Extract the dB values from the CSV data
     const dBValues = parsedData.map(Number);
 
@@ -473,7 +460,6 @@ socket.on('new_data', function(data) {
     // Update the canvas with the new data
 
     newData = dBValues;
-
     // drawRow(dBValues);
 });
 
