@@ -38,10 +38,10 @@ Before proceeding, ensure you have the following installed on your system:
    ```
 
 6. **Run the Flask Application:**
-   Note: this currently starts the Flask development server.
    ```bash
    python stk_sweep.py
    ```
+   Note: this currently starts the Flask development server.
 
 ## Usage
 
