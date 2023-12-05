@@ -95,6 +95,7 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 - Exception catches on backend
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 - Implement proper server like `gunicorn` without `rtl_tcp` proxy lagging
+- Remove old requirements
 
 **Aditional Features:**
 - Convince entire population of earth to use Linux || Add Windoze support
