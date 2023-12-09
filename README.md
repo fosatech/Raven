@@ -61,6 +61,7 @@ Enter the freqency range, gain, and bin size.
 
 - Gain should be between 0-50, or "automatic".
 - The bin size is in Hz, and sets the frequency range that each pixel covers. Lower bin size, more resolution.
+- The reccomended bin size is 0.12% of your bandwidth. A simple way to calculate this is `<bw in MHz> * 0.12`. This will give you the optimal bin size in kHz.
 
 ![wideband settings](readme/wideband-settings.png)
 

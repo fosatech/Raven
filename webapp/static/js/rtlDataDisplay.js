@@ -1,5 +1,5 @@
 const socket = io.connect('http://' + window.location.host + '');
-console.log(window.location.host)
+// console.log(window.location.host)
 
 const startButton = document.getElementById("startStopScan");
 
@@ -268,11 +268,18 @@ function dBToColor(dB) {
     const minDB = minSliderDB.textContent;
     const maxDB = maxSliderDB.textContent;
 
-    const ratio = ((dB - minDB) / (maxDB - minDB));
+    var ratio = ((dB - minDB) / (maxDB - minDB));
 
-    const red = Math.floor(255 * (ratio ** 2));
+    if (ratio < 0) {
+        var ratio = 0;
+    }
+    
+    var exponentRatio = (ratio ** 2);
+
+
+    const red = Math.floor(255 * (exponentRatio));
     const green = Math.floor(200 * (ratio));
-    const blue = Math.floor(75 * (1 - ratio ** 2));
+    const blue = Math.floor(75 * (1 - exponentRatio));
 
     return [red, green, blue];
 }

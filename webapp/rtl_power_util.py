@@ -70,13 +70,13 @@ class Wideband:
 
 			if output:
 				wideband_out = output.decode().split(', ')
-
 				# Sets lowest frequency on the first pass
+
 				if low_freq == 0:
-					low_freq = wideband_out[2]
+					low_freq = int(wideband_out[2])
 					full_scan += wideband_out[6:]
 
-				elif low_freq < wideband_out[2]:
+				elif low_freq < int(wideband_out[2]):
 					full_scan += wideband_out[6:]
 
 				else:
