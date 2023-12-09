@@ -91,12 +91,14 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 ## To-Do
 
 **Bug Fixes:**
-- Frontend breaks with really wide scan
-- Buttons don't turn red on `stop`
+- ~~Frontend breaks with really wide scan~~
+- ~~Buttons don't turn red on `stop`~~
 - Exception catches on backend
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 - Implement proper server like `gunicorn` without `rtl_tcp` proxy lagging
 - Remove old requirements
+- Detect when scan or tcp server is stoppen on backend
+- Properly kill tcp proxy
 
 **Aditional Features:**
 - Convince entire population of earth to use Linux || Add Windoze support
@@ -104,12 +106,16 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 - Zoom and scroll relative to page center/mouse cursor
 - Save scan files to disk
 - Add documentation
-- Add license
+- ~~Add license~~
 - Add usage docs
 - Add more `rtl_power` options
 - Add page settings
 - Update entire waterfall colors
+- Proper waterfall schema
+- Multiple waterfall color options
 - Automatic gain on frontent
+- Multiple concurrent widebands
+- Multiple concurrent rtl_tcp outputs
 
 ---
 
