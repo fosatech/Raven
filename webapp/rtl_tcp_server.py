@@ -75,7 +75,6 @@ class Server:
 
                 for self.s in inputready:
                     if self.s == self.server:
-                        print("accept")
                         self._on_accept()
 
                         break
