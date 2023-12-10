@@ -43,6 +43,17 @@ Before proceeding, ensure you have the following installed on your system:
    ```
    Note: this currently starts the Flask development server.
 
+## Docker
+
+TODO: Setup USB passthrough to access SDR devices
+
+Current draft Dockerfile and docker-compose.yml files have been added to the repo.
+
+To build and run application run the following command
+```bash
+docker compose run --publish 5000:5000 stk_sweep
+```
+
 ## Usage
 
 After completing the setup, the Flask application will be running on your local server. You can access it via `localhost:5000/rtl_data`.
