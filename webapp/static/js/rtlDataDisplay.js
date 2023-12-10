@@ -40,6 +40,9 @@ const currentTCPFreq = document.getElementById('currentTCPFreq');
 let activeTCPServer = false;
 let ongoingScan = false;
 
+var setLength = true;
+let newData = false;
+
 let actualHoverFreq = 0;
 
 minSliderDB.textContent = sliderMin.value;
@@ -89,6 +92,7 @@ startButton.addEventListener("click", function() {
     if (ongoingScan) {
         stopScan(rtlSettings);
     } else {
+        setLength = true;
         startScan(rtlSettings);
     }
     
@@ -233,6 +237,8 @@ function ctrlClickHandler(event) {
                 const viewWindowLocation  = ( ( (currentTCPFreq.textContent - 1.2) - freqStart ) / totalFreq * 100);
                 liveWindow.style.left = `${viewWindowLocation}%`
                 liveWindow.style.width = `${rtlWidth}%`
+                liveWindow.style.height = `${container.clientHeight}px`
+                console.log(container.clientHeight)
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -437,9 +443,6 @@ function updateCanvasTransform() {
 
 // Socket handling
 
-let setLength = true;
-let newData = false;
-
 socket.on('new_data', function(dataIn) {
 
     // set scan statue to true; just incase a scan is already going when webpage is loaded
@@ -453,10 +456,13 @@ socket.on('new_data', function(dataIn) {
     const dBValues = parsedData.map(Number);
 
     if (setLength) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         const fullLength = dBValues.length;
 
         canvas.width = fullLength;
         canvas.height = 1000;
+
+        // container.width = fullLength;
 
         activityBar.width = fullLength;
         activityBar.height = 1;

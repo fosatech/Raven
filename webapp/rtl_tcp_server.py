@@ -87,6 +87,9 @@ class Server:
                         break
                     else:
                         self._on_recv()
+        except Exception as e:
+            print("[!] Error in server_start():: ")
+            print(e)
 
         finally:
             self.server.close()

@@ -38,21 +38,22 @@
 #liveOverlayContainer {
     width: 100%;
     position: sticky;
-    overflow-y: hidden;
+/*    overflow-y: hidden;*/
     margin-bottom: -30px;
+
+    height: 30px;
 
     z-index: 3;
     top: 0;
 }
 
 #liveOverlay {
-    position: relative;
-    overflow: hidden;
+    position: absolute;
     width: 0px;
-    height: 30px;
-    background-color: rgba(75, 75, 75, 0.7);
-    border-bottom: 2px solid rgba(0, 255, 255, 1.0);
+    background-color: rgba(75, 75, 75, 0.3);
+    border-top: 3px solid rgba(0, 255, 255, 1.0);
     top: 0;
+/*    bottom: 0;*/
     pointer-events: none;
 }
 
@@ -182,7 +183,6 @@ label {
     width: 100%;
     padding: 10px;
 
-/*    background-color: orange;*/
     border: none;
     color: black;
     font-size: 1em;
@@ -193,20 +193,10 @@ label {
 
 .stopButton {
     background-color: red;
-    /*border: none;
-    color: black;
-    font-size: 1em;
-    font-weight: bold;
-    cursor: pointer;*/
 }
 
 .startButton {
     background-color: orange;
-    border: none;
-    color: black;
-    font-size: 1em;
-    font-weight: bold;
-    cursor: pointer;
 }
 
 .sidebar button:hover {

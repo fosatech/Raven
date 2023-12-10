@@ -82,7 +82,7 @@ This is for starting the backend `rtl_tcp` server. `STK Sweep` has a TCP proxy o
 
 ## Support
 
-For any issues or questions, please refer to `<coming_soon>` documentation or contact us.
+For any issues or questions, please refer to `<coming_soon>` documentation or contact us [here](https://fosa-tech.com/contact).
 
 ## Contributing
 
@@ -93,12 +93,13 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 **Bug Fixes:**
 - ~~Frontend breaks with really wide scan~~
 - ~~Buttons don't turn red on `stop`~~
-- Exception catches on backend
+- ~~Exception catches on backend~~
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 - Implement proper server like `gunicorn` without `rtl_tcp` proxy lagging
 - Remove old requirements
 - Detect when scan or tcp server is stoppen on backend
 - Properly kill tcp proxy
+- Fix broken sliders on some browsers (Brave, Opera)
 
 **Aditional Features:**
 - Convince entire population of earth to use Linux || Add Windoze support
@@ -116,6 +117,7 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 - Automatic gain on frontent
 - Multiple concurrent widebands
 - Multiple concurrent rtl_tcp outputs
+- Proper mobile browser support
 
 ---
 
