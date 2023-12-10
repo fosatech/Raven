@@ -25,6 +25,7 @@ class Forward:
 
     def shutdown(self):
         self.forward.close()
+        print("[*] Closed at Forward")
 
 class Server:
 
@@ -49,8 +50,6 @@ class Server:
         self.keep_running = True
 
         self._build_rtl_tcp()
-
-        print(self.server_ip, self.server_port)
 
 
     def server_start(self):
@@ -87,13 +86,11 @@ class Server:
                         break
                     else:
                         self._on_recv()
+
         except Exception as e:
             print("[!] Error in server_start():: ")
             print(e)
-
-        finally:
-            self.server.close()
-            print("[*] Closed at server_start()")
+            
 
     def async_server_start(self):
 
@@ -108,22 +105,20 @@ class Server:
         try:
             self.keep_running = False
 
-            self.tcp_process.send_signal(signal.SIGINT)
-            self.tcp_process.kill()
-            self.tcp_process.terminate()
+            if self.tcp_process:
+                self.tcp_process.terminate()
+                self.tcp_process.kill()
+                self.tcp_process.send_signal(signal.SIGINT)
+                print("[*] tcp_process killed")
 
             if self.server:
+                self.server.shutdown(socket.SHUT_RDWR)
                 self.server.close()
                 print("[*] Server Closed")
 
             if self.forward:
-                self.forward.shutdown()
+                self.forward.shutdown(socket.SHUT_RDWR)
                 print("[*] Forward Closed")
-
-
-            # self.tcp_proxy_server.join()
-
-            print("[*] Killed all")
 
         except Exception as e:
             print(e)

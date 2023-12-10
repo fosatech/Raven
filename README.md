@@ -96,9 +96,9 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 - ~~Exception catches on backend~~
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 - Implement proper server like `gunicorn` without `rtl_tcp` proxy lagging
-- Remove old requirements
+- ~~Remove old requirements~~
 - Detect when scan or tcp server is stoppen on backend
-- Properly kill tcp proxy
+- ~~Properly kill tcp proxy before initial connection~~
 - Fix broken sliders on some browsers (Brave, Opera)
 
 **Aditional Features:**
