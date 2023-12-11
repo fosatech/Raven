@@ -1,7 +1,7 @@
 
 # STK Sweep Setup Instructions
 
-This README provides detailed instructions on how to set up the STK Sweep server, as well as usage documentation. Follow these steps to get started.
+**Version 0.1.1**
 
 ## Prerequisites
 

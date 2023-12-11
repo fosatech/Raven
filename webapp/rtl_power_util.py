@@ -10,7 +10,7 @@ data_queue = queue.Queue()
 
 class Wideband:
 
-	def __init__(self, rtl_power_options):
+	def __init__(self, wideband_options):
 
 		# self.SET_FREQUENCY = 0x01
 
@@ -19,11 +19,15 @@ class Wideband:
 			"dBm" : "0"
 		}
 
-		self.opts = rtl_power_options
+		self.wideband_options = wideband_options
 
-		self.freq_options = "{}M:{}M:{}".format(rtl_power_options['freqStart'], rtl_power_options['freqEnd'], rtl_power_options['fftBin'])
+		self.rtl_freq_options = "{}M:{}M:{}".format(wideband_options['freqStart'], wideband_options['freqEnd'], wideband_options['fftBin'])
+		self.hackrf_freq_options = "{}:{}".format(wideband_options['freqStart'], wideband_options['freqEnd'])
 
-		self.power_args = ["rtl_power", "-f", self.freq_options, "-g", self.opts['gain'], "-i", "2", "-c", "0.20"]
+		self.rtl_power_args = ["rtl_power", "-f", self.rtl_freq_options, "-g", self.wideband_options['gain'], "-i", "2", "-c", "0.20"]
+		self.hackrf_sweep_args = ["hackrf_sweep", "-f", self.hackrf_freq_options, "-l", self.wideband_options['gain'], "-w", wideband_options['fftBin']]
+
+		print(self.hackrf_sweep_args)
 
 		a = []
 
@@ -56,8 +60,8 @@ class Wideband:
 
 		"""This function contains all of the logic for selecting peaks from the rtl_power input."""
 
-		# print(self.power_args)
-		self.power_process = subprocess.Popen(self.power_args, stdout=subprocess.PIPE)
+		# self.power_process = subprocess.Popen(self.rtl_power_args, stdout=subprocess.PIPE)
+		self.power_process = subprocess.Popen(self.hackrf_sweep_args, stdout=subprocess.PIPE)
 
 		low_freq = 0
 		full_scan = []

@@ -124,7 +124,7 @@ class Server:
 
     def _build_rtl_tcp(self):
 
-        self.tcp_process = subprocess.Popen(['rtl_tcp', '-d', '1', '-a', str(self.client_ip), '-p', str(self.client_port)], stdout=subprocess.PIPE)
+        self.tcp_process = subprocess.Popen(['rtl_tcp', '-d', '1', '-g', '50', '-a', str(self.client_ip), '-p', str(self.client_port)], stdout=subprocess.PIPE)
 
 
     def _on_accept(self):

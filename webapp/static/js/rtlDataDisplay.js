@@ -1,5 +1,4 @@
 const socket = io.connect('http://' + window.location.host + '');
-// console.log(window.location.host)
 
 const startButton = document.getElementById("startStopScan");
 
@@ -37,6 +36,10 @@ let rtlClientPort = document.getElementById('rtlTCPPort').value;
 
 const currentTCPFreq = document.getElementById('currentTCPFreq');
 
+const waterfallColorScheme = document.getElementById("waterfallColorSchema");
+
+let waterfallMap = waterfallColorScheme.value;
+
 let activeTCPServer = false;
 let ongoingScan = false;
 
@@ -48,6 +51,30 @@ let actualHoverFreq = 0;
 minSliderDB.textContent = sliderMin.value;
 maxSliderDB.textContent = sliderMax.value;
 thresholdValue.textContent = thresholdSlider.value;
+
+
+
+// Settings popup
+
+document.getElementById("settingsBtn").onclick = function() {
+    document.getElementById("settingsPopup").style.display = "block";
+}
+
+document.querySelector(".close-btn").onclick = function() {
+    document.getElementById("settingsPopup").style.display = "none";
+}
+
+// Close the popup if user clicks outside of it
+window.onclick = function(event) {
+    let popup = document.getElementById("settingsPopup");
+    if (event.target == popup) {
+        popup.style.display = "none";
+    }
+}
+
+waterfallColorScheme.addEventListener('change', function() {
+    waterfallMap = this.value;
+});
 
 
 
@@ -238,7 +265,6 @@ function ctrlClickHandler(event) {
                 liveWindow.style.left = `${viewWindowLocation}%`
                 liveWindow.style.width = `${rtlWidth}%`
                 liveWindow.style.height = `${container.clientHeight}px`
-                console.log(container.clientHeight)
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -252,6 +278,54 @@ canvas.addEventListener('click', ctrlClickHandler);
 
 
 // Drawing logic
+
+const colorMapDefault = [
+    [0, 20, 50],
+    [0, 50, 100],
+    [50, 100, 100],
+    [200, 200, 20],
+    [255, 0, 0]
+];
+
+const colorMapBW = [
+    [10, 10, 10],
+    [50, 50, 50],
+    [100, 100, 100],
+    [150, 150, 150],
+    [255, 255, 255]
+]
+
+const colorMapBWRed = [
+    [10, 10, 10],
+    [50, 50, 50],
+    [100, 100, 100],
+    [150, 150, 150],
+    [255, 0, 0]
+]
+
+const colorMapNightVision = [
+    [10, 0, 0],
+    [50, 0, 0],
+    [100, 0, 0],
+    [150, 0, 0],
+    [255, 0, 0]
+]
+
+const colorMapNightVisionPeaks = [
+    [10, 0, 0],
+    [50, 0, 0],
+    [100, 0, 0],
+    [150, 0, 0],
+    [255, 255, 0]
+]
+
+const waterfallColorMaps = {
+    "colorMapDefault": colorMapDefault,
+    "colorMapBW": colorMapBW,
+    "colorMapBWRed": colorMapBWRed,
+    "colorMapNightVision": colorMapNightVision,
+    "colorMapNightVisionPeaks": colorMapNightVisionPeaks
+}
 
 sliderMin.addEventListener('input', function() {
     const sliderValueMin = sliderMin.value;
@@ -268,8 +342,14 @@ thresholdSlider.addEventListener('input', function() {
     thresholdValue.textContent = thresholdDB;
 });
 
+function lerp(start, end, t) {
+    return start + (end - start) * t;
+}
+
 function dBToColor(dB) {
     // Assume dB is between -100 and 0 here
+
+    const map = waterfallColorMaps[waterfallMap];
 
     const minDB = minSliderDB.textContent;
     const maxDB = maxSliderDB.textContent;
@@ -278,14 +358,32 @@ function dBToColor(dB) {
 
     if (ratio < 0) {
         var ratio = 0;
-    }
+    };
+
+    if (ratio > 1) {
+        var ratio = 1;
+    };
     
-    var exponentRatio = (ratio ** 2);
+    const maxIndex = map.length - 1;
+    const scaledRatio = ratio * maxIndex;
+    const i = Math.floor(scaledRatio);
+    const t = scaledRatio - i;
 
+    if (i < 0) return map[0];
+    if (i >= maxIndex) return map[maxIndex];
 
-    const red = Math.floor(255 * (exponentRatio));
-    const green = Math.floor(200 * (ratio));
-    const blue = Math.floor(75 * (1 - exponentRatio));
+    const startColor = map[i];
+    const endColor = map[i + 1];
+
+    const red = Math.round(lerp(startColor[0], endColor[0], t));
+    const green = Math.round(lerp(startColor[1], endColor[1], t));
+    const blue = Math.round(lerp(startColor[2], endColor[2], t));
+
+    // var exponentRatio = (ratio ** 2);
+
+    // const red = Math.floor(255 * (exponentRatio));
+    // const green = Math.floor(200 * (ratio));
+    // const blue = Math.floor(75 * (1 - exponentRatio));
 
     return [red, green, blue];
 }
@@ -480,6 +578,6 @@ setInterval(() => {
     if (ongoingScan == true && newData != false) {
         drawRow(newData);
     }
-}, 2000);
+}, 200);
 
 // updateCanvasTransform();

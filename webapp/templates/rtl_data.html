@@ -47,10 +47,10 @@
                 <input type="range" class="slider" id="minDB" min="-100" max="0" value="-50" step="1">
 
                 <label for="maxDB">Max dB: <span id="sliderMaxValue">0</span></label>
-                <input type="range" class="slider" id="maxDB" min="-20" max="10" value="0" step="1">
+                <input type="range" class="slider" id="maxDB" min="-50" max="20" value="0" step="1">
 
                 <label for="thresholdSlider">Activity Threshold: <span id="thresholdValue">0</span></label>
-                <input type="range" class="slider" id="thresholdSlider" min="-50" max="10" value="-20" step="1">
+                <input type="range" class="slider" id="thresholdSlider" min="-80" max="10" value="-20" step="1">
                 
             </div>
 
@@ -87,9 +87,8 @@
 
             <hr>
 
-            <div>
-                
-            </div>
+            <button id="settingsBtn">Settings</button>
+
         </div>
 
         
@@ -102,6 +101,155 @@
             <canvas id="waterfall"></canvas>
 
             <!-- <img id="testIMG" src="{{ url_for('static', filename='img/frs0.png') }}" alt="Example Image"> -->
+        </div>
+
+        <div id="settingsPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn">&times;</span>
+                <!-- Your settings form or content goes here -->
+                <h1>Settings</h1>
+                <!-- Settings content -->
+
+                <div class="settings-section">
+                    <h3>Wideband</h3>
+                    <label for="deviceNumber">Device Number:</label>
+                    <select id="deviceNumber">
+                        <option value="deviceNumber1">1</option>
+                        <option value="deviceNumber2">2</option>
+                    </select>
+
+                    <label for="deviceType">Device Type:</label>
+                    <select id="deviceType">
+                        <option value="hackrf">hackrf</option>
+                        <option value="rtl-sdr">rtl-sdr</option>
+                    </select>
+                </div>
+
+                <hr>
+
+                <div class="settings-section">
+                    <h3>Colors</h3>
+                    <label for="waterfallColorSchema">Waterfall Theme:</label>
+                    <select id="waterfallColorSchema">
+                        <option value="colorMapDefault">Default</option>
+                        <option value="colorMapBW">Black and White</option>
+                        <option value="colorMapBWRed">B&W Thermal</option>
+                        <option value="colorMapNightVision">Night Vision</option>
+                        <option value="colorMapNightVisionPeaks">Night Vision Peaks</option>
+                    </select>
+
+                    <label for="activityBarColorSchema">Activity Bar Color:</label>
+                    <select id="activityBarColorSchema">
+                        <option value="ActivityBarYellow">Yellow</option>
+                        <option value="ActivityBarRed">Red</option>
+                        <option value="ActivityBarOrange">Orange</option>
+                        <option value="ActivityBarWhite">White</option>
+                    </select>
+                </div>
+
+                <hr>
+
+                <div class="settings-section">
+                    <h3>RTL-TCP</h3>
+
+                    <div class="rtl-tcp-inputs">
+                        <label for="rtlTCPSettingsIP0">IP:</label>
+                        <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP0" placeholder="127.0.0.1">
+
+                        <label for="rtlTCPSettingsPort0">Port:</label>
+                        <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort0" placeholder="6969">
+
+                        <label for="rtlTCPSettingsGain0">Gain:</label>
+                        <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain0" placeholder="0 - 40">
+
+                        <label for="rtlTCPSettingsDevice0">Device #:</label>
+                        <select id="rtlTCPSettingsDevice0">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+
+                        <label for="rtlTCPSettingsColor0">Color:</label>
+                        <select id="rtlTCPSettingsColor0">
+                            <option value="Orange">Orange</option>
+                            <option value="Green">Green</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                        </select>
+
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="rtl-tcp-inputs">
+                        <label for="rtlTCPSettingsIP1">IP:</label>
+                        <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP1" placeholder="127.0.0.1">
+
+                        <label for="rtlTCPSettingsPort1">Port:</label>
+                        <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort1" placeholder="6969">
+
+                        <label for="rtlTCPSettingsGain1">Gain:</label>
+                        <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain1" placeholder="0 - 40">
+
+                        <label for="rtlTCPSettingsDevice1">Device #:</label>
+                        <select id="rtlTCPSettingsDevice1">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+
+                        <label for="rtlTCPSettingsColor1">Color:</label>
+                        <select id="rtlTCPSettingsColor1">
+                            <option value="Orange">Orange</option>
+                            <option value="Green">Green</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                        </select>
+
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="rtl-tcp-inputs">
+                        <label for="rtlTCPSettingsIP2">IP:</label>
+                        <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP2" placeholder="127.0.0.1">
+
+                        <label for="rtlTCPSettingsPor2t">Port:</label>
+                        <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort2" placeholder="6969">
+
+                        <label for="rtlTCPSettingsGain2">Gain:</label>
+                        <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain2" placeholder="0 - 40">
+
+                        <label for="rtlTCPSettingsDevice2">Device #:</label>
+                        <select id="rtlTCPSettingsDevice2">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+
+                        <label for="rtlTCPSettingsColor2">Color:</label>
+                        <select id="rtlTCPSettingsColor2">
+                            <option value="Orange">Orange</option>
+                            <option value="Green">Green</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                        </select>
+
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <!-- Repeat end -->
+                </div>
+            </div>
         </div>
 
     </div>
