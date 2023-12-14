@@ -88,9 +88,9 @@ This is for creating new instaces of the backend `rtl_tcp` server. `STK Sweep` h
 
 Once you've created and configured your rtl-tcp instance, use the Start/Stop buttons to start and stop the server. To chage the center frequency that your device is tuned to, click on the frequency display for your desired instance, and you will see it selected. Then simply `ctrl + click` anywhere on the wideband to tune your rtl-tcp instance to that frequency. You will see an overlay pop up on the wideband waterfall that shows the current area your SDR is looking at.
 
-![rtl-tcp-instance](eadme/rtl-tcp-instance.png)
+![rtl-tcp-instance](readme/rtl-tcp-instance.png)
 
-![tuned-instance](eadme/tuned-instance-example.png)
+![tuned-instance](readme/tuned-instance-example.png)
 
 
 **Waterfall Display Settings:**
