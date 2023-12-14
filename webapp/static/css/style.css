@@ -135,8 +135,8 @@ label {
      -webkit-appearance: none;
      appearance: none;
      width: 15px;
-     height: 60px;
-     background: #000;
+     height: 15px;
+     background: orange;
      cursor: pointer;
      border: 0px solid orange;
      border-radius: 3px;
@@ -229,6 +229,16 @@ label {
 
 #settingsBtn:hover {
     background-color: #444;
+}
+
+#version-text {
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*    margin: 10px;*/
+    color: orange;
+    font-weight: bold;
+    font-size: 10px;
+/*    bottom: 0;*/
 }
 
 .popup {

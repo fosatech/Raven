@@ -70,6 +70,10 @@
 
             <button id="settingsBtn">Settings</button>
 
+            <hr>
+
+            <p id="version-text">Version 0.2.1 (beta)</p>
+
         </div>
 
         
@@ -103,10 +107,10 @@
                     <input type="text" id="frequencyRangeMax" placeholder="Stop">
                     
                     <label for="gain">Gain:</label>
-                    <input type="text" id="gain" placeholder="e.g., 10 or 'automatic'">
+                    <input type="text" id="gain" title="hackrf: 0-40 / rtl-sdr: 0-50 or 'automatic'" placeholder="0-40">
 
                     <label for="fftBinSize">Bin Size (kHz):</label>
-                    <input type="text" id="fftBinSize" placeholder="Bin size in kHz">
+                    <input type="text" id="fftBinSize" title="MHz * 0.12 for optimal size in KHz" placeholder="20">
 
                     <br>
 

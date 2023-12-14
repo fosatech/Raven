@@ -9,8 +9,11 @@ Before proceeding, ensure you have the following installed on your system:
 - Python 3
 - `pip` + `virtualenv`
 - `rtl-sdr` package, including `rtl_tcp` and `rtl_power`
+- `hackrf_sweep` for the [HackRF](https://github.com/greatscottgadgets/hackrf)
 
 ## Installation and Setup
+
+Before starting STK Sweep, make sure that you have the backend tools like rtl_tcp, rtl_power, or hackrf_sweep installed and updated to the most current version. If you're on Windoze, make sure that you have these in your system PATH. Instuctions for all this can be found with some quick Googleing. 
 
 1. **Clone the Source Code**
    ```bash
@@ -41,17 +44,17 @@ Before proceeding, ensure you have the following installed on your system:
    ```bash
    python stk_sweep.py
    ```
-   Note: this currently starts the Flask development server.
+   Note: this currently starts the Flask development server. Proper WSGI server support is coming soon.
 
 ## Usage
 
 After completing the setup, the Flask application will be running on your local server. You can access it via `localhost:5000/rtl_data`.
 
-1. Enter the desired wideband scan range and bin size and start the scan.
+1. Open the settings window, enter the desired wideband scan range and bin size, and start the scan.
 
 2. Start the `rtl_tcp` server with the desired port and IP, and connect to it with your SDR software.
 
-3. `ctrl + left click` on a frequency and STK Sweep will automatically tune your 2nd SDR to it.
+3. Select your desired rtl-tcp server instance by clicking on the current frequency, then `ctrl + left click` on the wideband window and STK Sweep will automatically tune your SDR to it.
 
 ## Settings and Configuration
 
@@ -59,11 +62,36 @@ After completing the setup, the Flask application will be running on your local 
 
 Enter the freqency range, gain, and bin size.
 
-- Gain should be between 0-50, or "automatic".
-- The bin size is in Hz, and sets the frequency range that each pixel covers. Lower bin size, more resolution.
+- Gain for the rtl-sdr should be between 0-50, or "automatic".
+- Gain for the hackrf should be between 0-40.
+- The bin size is in kHz, and sets the frequency range that each pixel covers. Lower bin size, more resolution.
 - The reccomended bin size is 0.12% of your bandwidth. A simple way to calculate this is `<bw in MHz> * 0.12`. This will give you the optimal bin size in kHz.
+- Note: the device ID does not currently correlate to any specific device. This will be fixed soon.
 
 ![wideband settings](readme/wideband-settings.png)
+
+
+**RTL TCP Settings:**
+
+This is for creating new instaces of the backend `rtl_tcp` server. `STK Sweep` has a TCP proxy on the backend in order to be able to update the center frequency of the 2nd RTL-SDR dongle.
+
+- **IP:** The IP address your external SDR software will connect to.
+- **Port:** The port your external SDR software will conenct to.
+- **Gain:** Gain for the rtl-sdr. Can be set from 0 - 50.
+- **Client Port:** The port that the backend proxy server and the rtl-tcp instance will use to talk to each other.
+- **Device:** The device ID for rtl-tcp to use. Change this if you're using multiple rtl-sdr's.
+- **Color:** Sets the display color.
+
+![rtl_tcp settings](readme/rtl-tcp-settings.png)
+
+![sdrpp-example](readme/sdrpp-example.png)
+
+Once you've created and configured your rtl-tcp instance, use the Start/Stop buttons to start and stop the server. To chage the center frequency that your device is tuned to, click on the frequency display for your desired instance, and you will see it selected. Then simply `ctrl + click` anywhere on the wideband to tune your rtl-tcp instance to that frequency. You will see an overlay pop up on the wideband waterfall that shows the current area your SDR is looking at.
+
+![rtl-tcp-instance](eadme/rtl-tcp-instance.png)
+
+![tuned-instance](eadme/tuned-instance-example.png)
+
 
 **Waterfall Display Settings:**
 
@@ -72,12 +100,6 @@ This sets the color profile for each new row of the waterfall. Future versions w
 The `Activity Threshold` slider sets the threshold for the activity bar.
 
 ![waterfall display settings](readme/waterfall-settings.png)
-
-**RTL TCP Settings:**
-
-This is for starting the backend `rtl_tcp` server. `STK Sweep` has a TCP proxy on the backend in order to be able to update the center frequency of the 2nd RTL-SDR dongle.
-
-![rtl_tcp settings](readme/rtl-tcp-settings.png)
 
 
 ## Support
@@ -90,34 +112,30 @@ Contributions to the SDR-STK project are welcome. Please read the `CONTRIBUTING.
 
 ## To-Do
 
+**Coming Soon:**
+- Save scan files to disk
+- Multiple concurrent widebands
+- Update info from backend when page refreshes
+- Type in center frequency for live SDR's
+- Proper mobile browser support
+- Zoom and scroll relative to page center/mouse cursor
+- Create custom frequency plans
+- **[ redacted ]**
+
 **Bug Fixes:**
-- ~~Frontend breaks with really wide scan~~
-- ~~Buttons don't turn red on `stop`~~
 - ~~Exception catches on backend~~
 - Large `bin` size breaks `drawRow()` in `rtlDataDisplay.js`
 - Implement proper server like `gunicorn` without `rtl_tcp` proxy lagging
-- ~~Remove old requirements~~
 - Detect when scan or tcp server is stoppen on backend
-- ~~Properly kill tcp proxy before initial connection~~
-- Fix broken sliders on some browsers (Brave, Opera)
+- Wideband and tcp proxy instances don't always shut down properly
+- ~~Fix broken sliders on some browsers (Brave, Opera)~~
 
 **Aditional Features:**
-- Convince entire population of earth to use Linux || Add Windoze support
+- Convince entire population of earth to use Linux || Test Windoze support
 - Custom wideband backend
-- Zoom and scroll relative to page center/mouse cursor
-- Save scan files to disk
-- Add documentation
-- ~~Add license~~
-- Add usage docs
-- Add more `rtl_power` options
-- Add page settings
 - Update entire waterfall colors
-- Proper waterfall schema
-- Multiple waterfall color options
 - Automatic gain on frontent
-- Multiple concurrent widebands
-- Multiple concurrent rtl_tcp outputs
-- Proper mobile browser support
+- Add option to directly interface with software like SDR++
 
 ---
 
