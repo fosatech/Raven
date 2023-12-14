@@ -7,7 +7,6 @@
 }
 
 #activityBar {
-
     position: sticky;
     top: 0;
     margin-top: -2px;
@@ -21,11 +20,10 @@
 }
 
 #waterfall {
-/*    margin-top: 25px;*/
     z-index: 1;
     width: 100%;
-    height: 3000px; /*3000px*/
-    image-rendering: pixelated; /* For pixelated scaling */
+    height: 3000px;
+    image-rendering: pixelated;
     will-change: transform;
 
     overflow-y: hidden;
@@ -35,25 +33,22 @@
     position: sticky;
 }
 
-#liveOverlayContainer {
+.liveOverlayContainer {
     width: 100%;
     position: sticky;
-/*    overflow-y: hidden;*/
     margin-bottom: -30px;
-
     height: 30px;
-
     z-index: 3;
     top: 0;
 }
 
-#liveOverlay {
+.liveOverlay {
     position: absolute;
     width: 0px;
-    background-color: rgba(75, 75, 75, 0.3);
+    background-color: rgba(255, 255, 255, 0.25);
     border-top: 3px solid rgba(0, 255, 255, 1.0);
+/*    border: 1px solid rgba(255, 255, 255, 0.1);*/
     top: 0;
-/*    bottom: 0;*/
     pointer-events: none;
 }
 
@@ -118,31 +113,6 @@ label {
     margin-bottom: 5px;
 }
 
-.frequencyRangeContainer {
-    display: flex;
-    justify-content: space-between;
-}
-
-.frequencyRangeContainer input:first-child{
-    margin-right: 5px;
-}
-
-.frequencyRangeContainer input:last-child{
-    margin-left: 5px;
-}
-
-.sidebar input[type="text"] {
-    width: 100%;
-    margin-bottom: 15px;
-    height: 20px;
-
-    color: #fff;
-    background: #333;
-    outline: none;
-    border: 0px solid orange;
-    border-radius: 0px;    
-}
-
 .sliders input[type="range"] {
     width: 100%;
     margin-bottom: 10px;
@@ -153,7 +123,11 @@ label {
     background: #000;
     outline: none;
     border: 0px solid orange;
-    border-radius: 0px;
+    border-radius: 3px;
+}
+
+#thresholdSlider {
+    margin-bottom: -4px;
 }
 
 /* for chrome/safari */
@@ -164,8 +138,8 @@ label {
      height: 60px;
      background: #000;
      cursor: pointer;
-     border: 5px solid lawngreen;
-     border-radius: 4px;
+     border: 0px solid orange;
+     border-radius: 3px;
 }
 
 /* for firefox */
@@ -175,7 +149,7 @@ label {
     background: orange;
     cursor: pointer;
     border: 0px solid orange;
-    border-radius: 1px;
+    border-radius: 3px;
 }
 
 
@@ -188,8 +162,14 @@ label {
     font-size: 1em;
     font-weight: bold;
     cursor: pointer;
+
+    border: 0px solid black;
+    border-radius: 3px;
 }
 
+.sidebar button:hover {
+    background-color: darkgreen;
+}
 
 .stopButton {
     background-color: red;
@@ -199,14 +179,12 @@ label {
     background-color: orange;
 }
 
-.sidebar button:hover {
-    background-color: darkgreen;
-}
 
 .freqInfo {
     background-color: #333;
-    border: 1px solid #000;
-    padding: 4px;
+    border: 0px solid #000;
+    border-radius: 3px;
+    padding: 5px;
     width: 100% -1px;
     text-align: left; 
 }
@@ -218,22 +196,39 @@ label {
 
 .rtlTCPInfo button {
     margin-bottom: 15px;
+    background-color: #444;
+    color: orange;
+    border: 0px solid black;
+    border-radius: 3px;
+}
+
+.rtlTCPInfo div {
+/*    border: 0px solid black;*/
 }
 
 .currentTCPFreqBox {
     background-color: #333;
-    border: 1px solid #000;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 3px;
+
     padding: 4px;
     width: 100% -1px;
     text-align: left; 
     font-weight: bold;
     color: orange;
     font-size: 13px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    cursor: pointer;
 }
 
 #settingsBtn {
     background-color: #333;
     color: white;
+}
+
+#settingsBtn:hover {
+    background-color: #444;
 }
 
 .popup {
@@ -244,16 +239,19 @@ label {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
+    overflow: scroll;
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
 .popup-content {
     background-color: rgba(20, 20, 20, 1.0);
-    margin: 15% auto;
+    margin: 10% auto;
+    margin-bottom: 2% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 0px solid #888;
+    border-radius: 10px;
     width: 50%;
+    height: auto;
 }
 
 .close-btn {
@@ -265,7 +263,7 @@ label {
 
 .close-btn:hover,
 .close-btn:focus {
-    color: black;
+    color: red;
     text-decoration: none;
     cursor: pointer;
 }
@@ -279,6 +277,24 @@ label {
   display: inline-block;
   width: 60px;
   height: 34px;
+}
+
+#frequencyRangeMin {
+    width: 40px;
+    margin-left: 5px;
+}
+
+#frequencyRangeMax {
+    width: 40px;
+    margin-left: 5px;
+}
+
+#gain {
+    width: 40px;
+}
+
+#fftBinSize {
+    width: 40px;
 }
 
 /* Switch slider */
@@ -298,10 +314,11 @@ label {
 }
 
 .popup-content select {
-    background-color: #222;
+    background-color: #333;
     color: white;
     outline: none;
-    border: 1px solid #222;
+    border: 0px solid black;
+    padding: 3px;
 }
 
 .popup-content input[type="text"] {
@@ -316,8 +333,45 @@ label {
     border-radius: 0px;    
 }
 
+.popup-content button {
+    width: 20px;
+    height: 20px;
+
+    margin-top: -3px;
+    margin-left: 5px;
+
+    display: inline-block;
+    vertical-align: middle;
+
+    border: none;
+    color: black;
+    font-size: 15px;
+    line-height: normal;
+/*    text-align: center;*/
+    font-weight: bold;
+    cursor: pointer;
+
+/*    border: 1px solid black;*/
+}
+
+.add-rtltcp-button {
+    background-color: green;
+}
+
+.remove-rtltcp-button {
+    background-color: red;
+}
+
+.popup-content button:hover {
+    background-color: orange;
+}
+
 .rtlTCPSettingsIP {
     width: 100px;
+}
+
+.rtlTCPSettingsClientPort {
+    width: 50px;
 }
 
 .rtlTCPSettingsPort {
@@ -328,8 +382,21 @@ label {
     width: 50px;
 }
 
-.rtl-tcp-inputs select[value="Orange"] {
-/*    color: orange;*/
+.rtl-tcp-inputs select {
+/*    background-color: #333;*/
+}
+
+.rtl-tcp-inputs {
+    margin-bottom: 10px;
+    background-color: #222;
+    border: 0px solid #000;
+    border-radius: 3px;
+
+    padding: 15px;
+    padding-bottom: 0px;
+
+    width: 100% -1px;
+    text-align: left;
 }
 
 .popup-content slider {

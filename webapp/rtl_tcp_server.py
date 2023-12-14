@@ -29,7 +29,7 @@ class Forward:
 
 class Server:
 
-    def __init__(self, proxy_server_ip, proxy_server_port):
+    def __init__(self, options):
 
         self.SET_FREQUENCY = 0x01
 
@@ -37,10 +37,11 @@ class Server:
         self.delay = 0.0001
 
         self.client_ip = '127.0.0.1'
-        self.client_port = 1234
+        self.client_port = int(options[3])
 
-        self.server_ip = str(proxy_server_ip)
-        self.server_port = int(proxy_server_port)
+        self.server_ip = str(options[0])
+        self.server_port = int(options[1])
+        self.device_id = options[2]
 
         self.input_list = []
         self.channel = {}
@@ -124,7 +125,7 @@ class Server:
 
     def _build_rtl_tcp(self):
 
-        self.tcp_process = subprocess.Popen(['rtl_tcp', '-d', '1', '-g', '50', '-a', str(self.client_ip), '-p', str(self.client_port)], stdout=subprocess.PIPE)
+        self.tcp_process = subprocess.Popen(['rtl_tcp', '-d', self.device_id, '-g', '50', '-a', str(self.client_ip), '-p', str(self.client_port)], stdout=subprocess.PIPE)
 
 
     def _on_accept(self):
@@ -170,9 +171,12 @@ class Server:
 
     def send_command(self, param):
 
-        cmd = struct.pack(">BI", self.SET_FREQUENCY, param)
-        print("[*] Sent")
-        self.forward.send(cmd)
+        try:
+            cmd = struct.pack(">BI", self.SET_FREQUENCY, param)
+            self.forward.send(cmd)
+            print("[*] Sent")
+        except Exception as e:
+            print("[!] send_command error :: ", e)
 
 
 if __name__ == '__main__':

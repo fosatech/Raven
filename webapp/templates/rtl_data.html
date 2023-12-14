@@ -23,19 +23,6 @@
 
             <!-- RTL Power Settings -->
             <div class="settings">
-                <label for="frequencyRange">Frequency Range in MHz:</label>
-
-                <div class="frequencyRangeContainer">
-                    <input type="text" id="frequencyRangeMin" placeholder="e.g., 88">
-                    <input type="text" id="frequencyRangeMax" placeholder="e.g., 108">
-                </div>
-                
-                <label for="gain">Gain:</label>
-                <input type="text" id="gain" placeholder="e.g., 10 or 'automatic'">
-
-                <label for="fftBinSize">FFT Bin Size:</label>
-                <input type="text" id="fftBinSize" placeholder="e.g., 12k">
-
                 <button id="startStopScan" class="startButton">Start Scan</button>
             </div>
 
@@ -69,19 +56,13 @@
             <hr>
 
             <div class="rtlTCPInfo">
-                <label for="rtlTCPIP">IP:</label>
-                <input type="text" id="rtlTCPIP" placeholder="127.0.0.1">
-
-                <label for="rtlTCPPort">Port:</label>
-                <input type="text" id="rtlTCPPort" placeholder="6969">
-
-                <button id="startRTLTCP" class="startButton">Start TCP Server</button>
-
-                <br>
-
-                <label for="currentTCPFreq">Current Center Frequency:</label>
-                <div class="currentTCPFreqBox">
-                    <span id="currentTCPFreq">0</span> MHz
+                <div id="tcp-button-template" style="display: none;">
+                    <div id="tcp-button-container{{ '{{id}}' }}">
+                        <button id="startRTLTCP{{ '{{id}}' }}" class="startTCPButton">Start TCP Server #{{ '{{id}}' }}</button>
+                        <div class="currentTCPFreqBox" id="currentTCPFreqBox{{ '{{id}}' }}">
+                            <span id="currentTCPFreq{{ '{{id}}' }}">0</span> MHz
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -93,9 +74,13 @@
 
         
         <div id="canvasContainer" class="rfContainer">
-            <div id="liveOverlayContainer">
-                <div id="liveOverlay"></div>
+
+            <div class="liveOverlayContainer">
+                <div id="liveOverlayTemplate" style="display: none;">
+                    <div class="liveOverlay" id="liveOverlay{{ '{{id}}' }}"></div>
+                </div>
             </div>
+
             <canvas id="activityBar"></canvas>
             <hr id="activityBreak">
             <canvas id="waterfall"></canvas>
@@ -112,8 +97,22 @@
 
                 <div class="settings-section">
                     <h3>Wideband</h3>
+
+                    <label for="frequencyRange">Frequency Range (MHz):</label>
+                    <input type="text" id="frequencyRangeMin" placeholder="Start">
+                    <input type="text" id="frequencyRangeMax" placeholder="Stop">
+                    
+                    <label for="gain">Gain:</label>
+                    <input type="text" id="gain" placeholder="e.g., 10 or 'automatic'">
+
+                    <label for="fftBinSize">Bin Size (kHz):</label>
+                    <input type="text" id="fftBinSize" placeholder="Bin size in kHz">
+
+                    <br>
+
                     <label for="deviceNumber">Device Number:</label>
                     <select id="deviceNumber">
+                        <option value="deviceNumber0">0</option>
                         <option value="deviceNumber1">1</option>
                         <option value="deviceNumber2">2</option>
                     </select>
@@ -132,6 +131,7 @@
                     <label for="waterfallColorSchema">Waterfall Theme:</label>
                     <select id="waterfallColorSchema">
                         <option value="colorMapDefault">Default</option>
+                        <option value="colorMapDefaultPeaks">Default Peaks</option>
                         <option value="colorMapBW">Black and White</option>
                         <option value="colorMapBWRed">B&W Thermal</option>
                         <option value="colorMapNightVision">Night Vision</option>
@@ -140,10 +140,11 @@
 
                     <label for="activityBarColorSchema">Activity Bar Color:</label>
                     <select id="activityBarColorSchema">
-                        <option value="ActivityBarYellow">Yellow</option>
-                        <option value="ActivityBarRed">Red</option>
-                        <option value="ActivityBarOrange">Orange</option>
-                        <option value="ActivityBarWhite">White</option>
+                        <option value="[255, 255, 0]">Yellow</option>
+                        <option value="[255, 0, 0]">Red</opton>
+                        <option value="[255, 180, 0]">Orange</option>
+                        <option value="[255, 255, 255]">White</option>
+                        <option value="[0, 255, 255]">Blue</option>
                     </select>
                 </div>
 
@@ -151,103 +152,48 @@
 
                 <div class="settings-section">
                     <h3>RTL-TCP</h3>
+                    <div class="rtlTCPDeviceSettingsContainer">
+                        
+                        <div style="display: none;" id="rtl-tcp-template">
+                            <div class="rtl-tcp-inputs" id="rtl-tcp-input{{ '{{id}}' }}">
+                                <label for="rtlTCPSettingsIP{{ '{{id}}' }}">IP:</label>
+                                <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP{{ '{{id}}' }}" value="127.0.0.1" placeholder="127.0.0.1">
 
-                    <div class="rtl-tcp-inputs">
-                        <label for="rtlTCPSettingsIP0">IP:</label>
-                        <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP0" placeholder="127.0.0.1">
+                                <label for="rtlTCPSettingsPort{{ '{{id}}' }}">Port:</label>
+                                <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort{{ '{{id}}' }}" value="{{ '{{port}}' }}" placeholder="6969">
 
-                        <label for="rtlTCPSettingsPort0">Port:</label>
-                        <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort0" placeholder="6969">
+                                <label for="rtlTCPSettingsGain{{ '{{id}}' }}">Gain:</label>
+                                <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain{{ '{{id}}' }}" value="40" placeholder="0 - 40">
 
-                        <label for="rtlTCPSettingsGain0">Gain:</label>
-                        <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain0" placeholder="0 - 40">
+                                <br>
 
-                        <label for="rtlTCPSettingsDevice0">Device #:</label>
-                        <select id="rtlTCPSettingsDevice0">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
+                                <label for="rtlTCPSettingsClientPort{{ '{{id}}' }}">Client Port:</label>
+                                <input type="text" class="rtlTCPSettingsClientPort" id="rtlTCPSettingsClientPort{{ '{{id}}' }}" value="{{ '{{client-port}}' }}" placeholder="1234">
 
-                        <label for="rtlTCPSettingsColor0">Color:</label>
-                        <select id="rtlTCPSettingsColor0">
-                            <option value="Orange">Orange</option>
-                            <option value="Green">Green</option>
-                            <option value="Red">Red</option>
-                            <option value="Blue">Blue</option>
-                        </select>
+                                <label for="rtlTCPSettingsDevice{{ '{{id}}' }}">Device #:</label>
+                                <select id="rtlTCPSettingsDevice{{ '{{id}}' }}" class="rtlTCPSettingsDeviceID">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
 
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
+                                <label for="rtlTCPSettingsColor{{ '{{id}}' }}">Color:</label>
+                                <select id="rtlTCPSettingsColor{{ '{{id}}' }}" class="rtlTCPSettingsColor">
+                                    <option value="orange">Orange</option>
+                                    <option value="rgb(255, 0, 0)">Red</option>
+                                    <option value="rgb(0, 255, 50)">Green</option>
+                                    <option value="rgb(0, 255, 255)">Blue</option>
+                                    <option value="rgb(255, 100, 255)">Purple</option>
+                                </select>
+
+                                <button class="add-rtltcp-button">+</button>
+
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="rtl-tcp-inputs">
-                        <label for="rtlTCPSettingsIP1">IP:</label>
-                        <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP1" placeholder="127.0.0.1">
-
-                        <label for="rtlTCPSettingsPort1">Port:</label>
-                        <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort1" placeholder="6969">
-
-                        <label for="rtlTCPSettingsGain1">Gain:</label>
-                        <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain1" placeholder="0 - 40">
-
-                        <label for="rtlTCPSettingsDevice1">Device #:</label>
-                        <select id="rtlTCPSettingsDevice1">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-
-                        <label for="rtlTCPSettingsColor1">Color:</label>
-                        <select id="rtlTCPSettingsColor1">
-                            <option value="Orange">Orange</option>
-                            <option value="Green">Green</option>
-                            <option value="Red">Red</option>
-                            <option value="Blue">Blue</option>
-                        </select>
-
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-
-                    <div class="rtl-tcp-inputs">
-                        <label for="rtlTCPSettingsIP2">IP:</label>
-                        <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP2" placeholder="127.0.0.1">
-
-                        <label for="rtlTCPSettingsPor2t">Port:</label>
-                        <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort2" placeholder="6969">
-
-                        <label for="rtlTCPSettingsGain2">Gain:</label>
-                        <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain2" placeholder="0 - 40">
-
-                        <label for="rtlTCPSettingsDevice2">Device #:</label>
-                        <select id="rtlTCPSettingsDevice2">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-
-                        <label for="rtlTCPSettingsColor2">Color:</label>
-                        <select id="rtlTCPSettingsColor2">
-                            <option value="Orange">Orange</option>
-                            <option value="Green">Green</option>
-                            <option value="Red">Red</option>
-                            <option value="Blue">Blue</option>
-                        </select>
-
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <!-- Repeat end -->
                 </div>
             </div>
         </div>
