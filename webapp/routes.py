@@ -9,7 +9,7 @@ import time
 
 
 current_wideband = None
-current_server = None
+current_server = {}
 
 w_socket = None
 
@@ -58,15 +58,20 @@ def rtl_tcp_start():
 
 	rtl_tcp_data = request.json
 	tcp_settings = rtl_tcp_data.get("tcpSettings")
+	serverID = tcp_settings['serverID']
 
-	if current_server:
-		current_server.kill_all()
-		current_server = None
-		print("[*] Killed tcp server")
+	rtl_tcp_options = [tcp_settings['rtlServerIP'], tcp_settings['rtlServerPort'], tcp_settings['deviceID'], tcp_settings['rtlClientPort']]
+
+	print(current_server)
+
+	if serverID in current_server:
+		current_server[serverID].kill_all()
+		current_server.pop(serverID)
+		print("[*] Killed tcp server #" + serverID)
 
 	if tcp_settings['activeTCPServer'] is False:
-		current_server = Server(tcp_settings['rtlClientIP'], tcp_settings['rtlClientPort'])
-		current_server.async_server_start()
+		current_server[serverID] = Server(rtl_tcp_options)
+		current_server[serverID].async_server_start()
 
 		return jsonify({"status": "success"})
 
@@ -77,15 +82,15 @@ def rtl_tcp_start():
 @app.route("/rtl_tcp_frequency", methods=["POST"])
 def rtl_tcp_frequency():
 
-	if current_server:
-		frequency_data = request.json
-		set_frequency = frequency_data.get('currentTCPFreq')
+	global current_server
 
-		print(frequency_data)
+	frequency_data = request.json
+	set_frequency = frequency_data.get('changeRtlFreq')
+	serverID = str(set_frequency['serverID'])
 
-		current_server.send_command(set_frequency)
-
-		return jsonify({"status": "sucess"})
-
+	if serverID in current_server:
+		if current_server[serverID]:
+			current_server[serverID].send_command(set_frequency['frequency'])
+			return jsonify({"status": "sucess"})
 	else:
 		return jsonify({"status": "no current server!"})
