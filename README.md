@@ -10,6 +10,7 @@ Before proceeding, ensure you have the following installed on your system:
 - `pip` + `virtualenv`
 - `rtl-sdr` package, including `rtl_tcp` and `rtl_power`
 - `hackrf_sweep` for the [HackRF](https://github.com/greatscottgadgets/hackrf)
+-  Optionally `docker`
 
 ## Installation and Setup
 
