@@ -55,6 +55,22 @@ To build and run application run the following command
 ./startContainer.sh
 ```
 
+Additionally, the Docker image is built with GitHub actions on the main branch.
+
+If you open up the docker-compose.yml and modify this line:
+
+```yml
+    image: sweep
+```
+
+to be
+
+```yml
+    image: ghcr.io/fosatech/stk-sweep:latest
+```
+
+Then run `docker compose run --publish 5000:5000 stk_sweep` to start the container
+
 This bash script will build the docker image from the Docker file and then run the container from the docker compose file.
 
 ## Usage
