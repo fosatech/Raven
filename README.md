@@ -48,8 +48,6 @@ Before starting STK Sweep, make sure that you have the backend tools like rtl_tc
 
 ## Docker
 
-TODO: Setup USB passthrough to access SDR devices
-
 Current draft Dockerfile and docker-compose.yml files have been added to the repo.
 
 To build and run application run the following command
