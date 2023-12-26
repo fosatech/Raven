@@ -48,12 +48,14 @@ Before starting STK Sweep, make sure that you have the backend tools like rtl_tc
 
 ## Docker
 
-Current draft Dockerfile and docker-compose.yml files have been added to the repo.
+Dockerfile and docker-compose.yml files have been added to the repo.
 
 To build and run application run the following command
 ```bash
-docker compose run --publish 5000:5000 stk_sweep
+./startContainer.sh
 ```
+
+This bash script will build the docker image from the Docker file and then run the container from the docker compose file.
 
 ## Usage
 
