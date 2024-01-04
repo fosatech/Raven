@@ -3,6 +3,8 @@ import threading
 import sys
 import time
 import queue
+import csv
+import time
 
 from . import socketio
 
@@ -25,7 +27,7 @@ class Wideband:
 		self.hackrf_freq_options = "{}:{}".format(wideband_options['freqStart'], wideband_options['freqEnd'])
 
 		self.rtl_power_args = ["rtl_power", "-f", self.rtl_freq_options, "-g", self.wideband_options['gain'], "-i", "2", "-c", "0.20"]
-		self.hackrf_sweep_args = ["hackrf_sweep", "-f", self.hackrf_freq_options, "-l", self.wideband_options['gain'], "-w", wideband_options['fftBin'] + "000"]
+		self.hackrf_sweep_args = ["hackrf_sweep", "-f", self.hackrf_freq_options, "-l", self.wideband_options['gain'], "-g", "50", "-w", wideband_options['fftBin'] + "000"]
 
 		self.device_switch = {
 			"hackrf": self.hackrf_sweep_args,
@@ -71,54 +73,63 @@ class Wideband:
 		full_scan = []
 		hackrf_scan = {}
 
+		csv_filename = "scans/raven_scan_{}.csv".format(int(time.time()))
+		with open(csv_filename, mode='w') as scan_csv_file:
+			csv_writer = csv.writer(scan_csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-		while self.keep_running:
-			output = self.power_process.stdout.readline()
-			if self.power_process.poll() is not None:
-				break
+			while self.keep_running:
+				output = self.power_process.stdout.readline()
+				if self.power_process.poll() is not None:
+					break
 
-			if output:
-				if self.wideband_options['currentDevice'] == 'rtl-sdr':
-					wideband_out = output.decode().split(', ')
+				if output:
+					if self.wideband_options['currentDevice'] == 'rtl-sdr':
+						wideband_out = output.decode().split(', ')
 
-					# Sets lowest frequency on the first pass
-					if low_freq == 0:
-						low_freq = int(wideband_out[2])
-						full_scan += wideband_out[6:]
+						# Sets lowest frequency on the first pass
+						if low_freq == 0:
+							low_freq = int(wideband_out[2])
+							full_scan += wideband_out[6:]
+							csv_writer.writerow(wideband_out)
 
-					elif low_freq < int(wideband_out[2]):
-						full_scan += wideband_out[6:]
+						elif low_freq < int(wideband_out[2]):
+							full_scan += wideband_out[6:]
+							csv_writer.writerow(wideband_out)
 
-					else:
-						socketio.emit('new_data', {'data': full_scan}, namespace='/')
-						full_scan = []
-						full_scan += wideband_out[6:]
+						else:
+							socketio.emit('new_data', {'data': full_scan}, namespace='/')
+							full_scan = []
+							full_scan += wideband_out[6:]
+							csv_writer.writerow(wideband_out)
 
-				elif self.wideband_options['currentDevice'] == 'hackrf':
-					wideband_out = output.decode().split(', ')
-					# Sets lowest frequency on the first pass
+					elif self.wideband_options['currentDevice'] == 'hackrf':
+						wideband_out = output.decode().split(', ')
+						# Sets lowest frequency on the first pass
 
-					if low_freq == 0:
-						low_freq = int(wideband_out[2])
-						hackrf_scan[str(wideband_out[2])] = wideband_out[6:]
+						if low_freq == 0:
+							low_freq = int(wideband_out[2])
+							hackrf_scan[str(wideband_out[2])] = wideband_out[6:]
+							csv_writer.writerow(wideband_out)
 
-					elif low_freq < int(wideband_out[2]):
-						hackrf_scan[str(wideband_out[2])] = wideband_out[6:]
-
-
-					elif low_freq == int(wideband_out[2]):
-						sorted_freq_keys = sorted(hackrf_scan.keys())
-						full_scan = [item for key in sorted_freq_keys for item in hackrf_scan[key]]
-						socketio.emit('new_data', {'data': full_scan}, namespace='/')
-						full_scan = []
-						hackrf_scan = {}
-						hackrf_scan[str(wideband_out[2])] = wideband_out[6:]
-
-					else:
-						print("[!] Skipped scan integration")
+						elif low_freq < int(wideband_out[2]):
+							hackrf_scan[str(wideband_out[2])] = wideband_out[6:]
+							csv_writer.writerow(wideband_out)
 
 
-			pass
+						elif low_freq == int(wideband_out[2]):
+							sorted_freq_keys = sorted(hackrf_scan.keys())
+							full_scan = [item for key in sorted_freq_keys for item in hackrf_scan[key]]
+							socketio.emit('new_data', {'data': full_scan}, namespace='/')
+							full_scan = []
+							hackrf_scan = {}
+							hackrf_scan[str(wideband_out[2])] = wideband_out[6:]
+							csv_writer.writerow(wideband_out)
+
+						else:
+							print("[!] Skipped scan integration")
+
+
+				pass
 
 		print("[!] Current rtl_power instance terminated")
 

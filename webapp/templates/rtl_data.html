@@ -5,206 +5,404 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/raven-logo.ico') }}">
 
     <script src="{{ url_for('static', filename='socket.io/socket.io.js') }}"></script>
 
-    <title>STK Sweep</title>
+    <title>RAVEN</title>
 </head>
 
 <body>
 
-    <div class="flex-container">
-        <div class="sidebar">
+    <div class="bodyContainer">
+        <div class="flex-container">
+            <div class="sidebar">
+                <div class="title-div">
+                    <img id="raven-logo"  src="{{ url_for('static', filename='img/raven-logo.png') }}" alt="Example Image">
+                    <h1 class="titleSweep">RΛVΞN</h1>
+                </div>
+                <hr>
 
-            <h1 class="titleSweep">STK Sweep</h1>
+                <!-- RTL Power Settings -->
+                <div class="settings">
+                    <button id="startStopScan" class="startButton">Start Scan</button>
+                </div>
 
-            <hr>
+                <hr>
 
-            <!-- RTL Power Settings -->
-            <div class="settings">
-                <button id="startStopScan" class="startButton">Start Scan</button>
-            </div>
+                <!-- Sliders -->
+                <div class="sliders">
+                    <label for="minDB">Min dB: <span id="sliderMinValue">-50</span></label>
+                    <input type="range" class="slider" id="minDB" min="-100" max="0" value="-50" step="1">
 
-            <hr>
+                    <label for="maxDB">Max dB: <span id="sliderMaxValue">0</span></label>
+                    <input type="range" class="slider" id="maxDB" min="-50" max="20" value="0" step="1">
 
-            <!-- Sliders -->
-            <div class="sliders">
-                <label for="minDB">Min dB: <span id="sliderMinValue">-50</span></label>
-                <input type="range" class="slider" id="minDB" min="-100" max="0" value="-50" step="1">
+                    <label for="thresholdSlider">Activity Threshold: <span id="thresholdValue">0</span></label>
+                    <input type="range" class="slider" id="thresholdSlider" min="-80" max="10" value="-20" step="1">
+                    
+                </div>
 
-                <label for="maxDB">Max dB: <span id="sliderMaxValue">0</span></label>
-                <input type="range" class="slider" id="maxDB" min="-50" max="20" value="0" step="1">
+                <hr>
 
-                <label for="thresholdSlider">Activity Threshold: <span id="thresholdValue">0</span></label>
-                <input type="range" class="slider" id="thresholdSlider" min="-80" max="10" value="-20" step="1">
-                
-            </div>
-
-            <hr>
-
-            <div class="freqInfo">
-                <label>Frequency::</label><br>
-                <span id="infoBoxFreq">0</span> MHz<br>
-
-                <br>
-
-                <label>Time::</label><br>
-                <span id="infoBoxTime">0</span> sec
-            </div>
-
-            <hr>
-
-            <div class="rtlTCPInfo">
-                <div id="tcp-button-template" style="display: none;">
-                    <div id="tcp-button-container{{ '{{id}}' }}">
-                        <button id="startRTLTCP{{ '{{id}}' }}" class="startTCPButton">Start TCP Server #{{ '{{id}}' }}</button>
-                        <div class="currentTCPFreqBox" id="currentTCPFreqBox{{ '{{id}}' }}">
-                            <span id="currentTCPFreq{{ '{{id}}' }}">0</span> MHz
+                <div class="rtlTCPInfo">
+                    <div id="tcp-button-template" style="display: none;">
+                        <div id="tcp-button-container{{ '{{id}}' }}">
+                            <button id="startRTLTCP{{ '{{id}}' }}" class="startTCPButton">Start TCP Server #{{ '{{id}}' }}</button>
+                            <div class="currentTCPFreqBox" id="currentTCPFreqBox{{ '{{id}}' }}">
+                                <span id="currentTCPFreq{{ '{{id}}' }}">0</span> MHz
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <button id="settingsBtn">Settings</button>
+                <br>
+                <button id="olympusBtn">[ ØLYMPUS ]</button>
+
+                <hr>
+
+                <p id="version-text">Version 0.2.1 (beta)</p>
+
+            </div>
+
+            <div class="mainPageContainer">
+                <div class="canvas-div-container" id="canvasDivContainer">
+                    <div class="canvas-div" id="canvasDiv">
+
+                        <div id="overlayDiv">                            
+                            <div id="live-overlay-container" class="liveOverlayContainer">
+                                <div id="liveOverlayTemplate" style="display: none;">
+                                    <div class="liveOverlay" id="liveOverlay{{ '{{id}}' }}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rfContainer" id="activityContainer">
+                            <div id="activityBarContainer">
+                                <canvas id="activityBar"></canvas>
+                            </div>
+                            
+                            <div>
+                                <hr id="activityBreak">
+                            </div>
+                        </div>
+
+
+                        <div id="canvasContainer" class="rfContainer">
+                            <canvas id="waterfall"></canvas>
+                            <img id="testIMG" style="display: none;" src="" alt="Example Image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="freqInfo">
+                    <div class="hoverFreqInfo">
+                        <label>Frequency::</label><br>
+                        <span id="infoBoxFreq">0</span> MHz<br>
+                    </div>
+                    <div class="hoverTimeInfo">
+                        <label>Time::</label><br>
+                        <span id="infoBoxTime">0</span> sec<br>
                     </div>
                 </div>
             </div>
 
-            <hr>
+            <div id="olympusPopup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <h1>Olympus API Settings</h1>
 
-            <button id="settingsBtn">Settings</button>
+                    <div class="settings-section">
+                        <label for="api-key">API Key:</label>
+                        <br>
+                        <input value="" type="text" id="api-key" placeholder="Enter your API Key:">
 
-            <hr>
+                        <br>
+                        <label for="location-latlong">Location:</label>
+                        <br>
+                        <input value="" type="text" id="location-latlong" placeholder="Enter center point coordinates:">
 
-            <p id="version-text">Version 0.2.1 (beta)</p>
-
-        </div>
-
-        
-        <div id="canvasContainer" class="rfContainer">
-
-            <div class="liveOverlayContainer">
-                <div id="liveOverlayTemplate" style="display: none;">
-                    <div class="liveOverlay" id="liveOverlay{{ '{{id}}' }}"></div>
+                        <br>
+                        <button id="olympus-api-submit-btn">Submit</button>
+                    </div>
                 </div>
             </div>
 
-            <canvas id="activityBar"></canvas>
-            <hr id="activityBreak">
-            <canvas id="waterfall"></canvas>
 
-            <!-- <img id="testIMG" src="{{ url_for('static', filename='img/frs0.png') }}" alt="Example Image"> -->
-        </div>
+            <div id="settingsPopup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <h1>Settings</h1>
 
-        <div id="settingsPopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn">&times;</span>
-                <!-- Your settings form or content goes here -->
-                <h1>Settings</h1>
-                <!-- Settings content -->
+                    <!-- Settings content -->
 
-                <div class="settings-section">
-                    <h3>Wideband</h3>
+                    <div class="settings-section">
+                        <h3>Wideband</h3>
 
-                    <label for="frequencyRange">Frequency Range (MHz):</label>
-                    <input type="text" id="frequencyRangeMin" placeholder="Start">
-                    <input type="text" id="frequencyRangeMax" placeholder="Stop">
-                    
-                    <label for="gain">Gain:</label>
-                    <input type="text" id="gain" title="hackrf: 0-40 / rtl-sdr: 0-50 or 'automatic'" placeholder="0-40">
-
-                    <label for="fftBinSize">Bin Size (kHz):</label>
-                    <input type="text" id="fftBinSize" title="MHz * 0.12 for optimal size in KHz" placeholder="20">
-
-                    <br>
-
-                    <label for="deviceNumber">Device Number:</label>
-                    <select id="deviceNumber">
-                        <option value="deviceNumber0">0</option>
-                        <option value="deviceNumber1">1</option>
-                        <option value="deviceNumber2">2</option>
-                    </select>
-
-                    <label for="deviceType">Device Type:</label>
-                    <select id="deviceType">
-                        <option value="hackrf">hackrf</option>
-                        <option value="rtl-sdr">rtl-sdr</option>
-                    </select>
-                </div>
-
-                <hr>
-
-                <div class="settings-section">
-                    <h3>Colors</h3>
-                    <label for="waterfallColorSchema">Waterfall Theme:</label>
-                    <select id="waterfallColorSchema">
-                        <option value="colorMapDefault">Default</option>
-                        <option value="colorMapDefaultPeaks">Default Peaks</option>
-                        <option value="colorMapBW">Black and White</option>
-                        <option value="colorMapBWRed">B&W Thermal</option>
-                        <option value="colorMapNightVision">Night Vision</option>
-                        <option value="colorMapNightVisionPeaks">Night Vision Peaks</option>
-                    </select>
-
-                    <label for="activityBarColorSchema">Activity Bar Color:</label>
-                    <select id="activityBarColorSchema">
-                        <option value="[255, 255, 0]">Yellow</option>
-                        <option value="[255, 0, 0]">Red</opton>
-                        <option value="[255, 180, 0]">Orange</option>
-                        <option value="[255, 255, 255]">White</option>
-                        <option value="[0, 255, 255]">Blue</option>
-                    </select>
-                </div>
-
-                <hr>
-
-                <div class="settings-section">
-                    <h3>RTL-TCP</h3>
-                    <div class="rtlTCPDeviceSettingsContainer">
+                        <label for="frequencyRange">Frequency Range (MHz):</label>
+                        <input type="text" id="frequencyRangeMin" placeholder="Start">
+                        <input type="text" id="frequencyRangeMax" placeholder="Stop">
                         
-                        <div style="display: none;" id="rtl-tcp-template">
-                            <div class="rtl-tcp-inputs" id="rtl-tcp-input{{ '{{id}}' }}">
-                                <label for="rtlTCPSettingsIP{{ '{{id}}' }}">IP:</label>
-                                <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP{{ '{{id}}' }}" value="127.0.0.1" placeholder="127.0.0.1">
+                        <label for="gain">Gain:</label>
+                        <input type="text" id="gain" title="hackrf: 0-40 / rtl-sdr: 0-50 or 'automatic'" placeholder="0-40">
 
-                                <label for="rtlTCPSettingsPort{{ '{{id}}' }}">Port:</label>
-                                <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort{{ '{{id}}' }}" value="{{ '{{port}}' }}" placeholder="6969">
+                        <label for="fftBinSize">Bin Size (kHz):</label>
+                        <input type="text" id="fftBinSize" title="MHz * 0.12 for optimal size in KHz" placeholder="20">
 
-                                <label for="rtlTCPSettingsGain{{ '{{id}}' }}">Gain:</label>
-                                <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain{{ '{{id}}' }}" value="40" placeholder="0 - 40">
+                        <br>
 
-                                <br>
+                        <label for="deviceNumber">Device Number:</label>
+                        <select id="deviceNumber">
+                            <option value="deviceNumber0">0</option>
+                            <option value="deviceNumber1">1</option>
+                            <option value="deviceNumber2">2</option>
+                        </select>
 
-                                <label for="rtlTCPSettingsClientPort{{ '{{id}}' }}">Client Port:</label>
-                                <input type="text" class="rtlTCPSettingsClientPort" id="rtlTCPSettingsClientPort{{ '{{id}}' }}" value="{{ '{{client-port}}' }}" placeholder="1234">
+                        <label for="deviceType">Device Type:</label>
+                        <select id="deviceType">
+                            <option value="hackrf">hackrf</option>
+                            <option value="rtl-sdr">rtl-sdr</option>
+                        </select>
+                    </div>
 
-                                <label for="rtlTCPSettingsDevice{{ '{{id}}' }}">Device #:</label>
-                                <select id="rtlTCPSettingsDevice{{ '{{id}}' }}" class="rtlTCPSettingsDeviceID">
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                    <hr>
 
-                                <label for="rtlTCPSettingsColor{{ '{{id}}' }}">Color:</label>
-                                <select id="rtlTCPSettingsColor{{ '{{id}}' }}" class="rtlTCPSettingsColor">
-                                    <option value="orange">Orange</option>
-                                    <option value="rgb(255, 0, 0)">Red</option>
-                                    <option value="rgb(0, 255, 50)">Green</option>
-                                    <option value="rgb(0, 255, 255)">Blue</option>
-                                    <option value="rgb(255, 100, 255)">Purple</option>
-                                </select>
+                    <div class="settings-section">
+                        <h3>Colors</h3>
+                        <label for="waterfallColorSchema">Waterfall Theme:</label>
+                        <select id="waterfallColorSchema">
+                            <option value="colorMapDefault">Default</option>
+                            <option value="colorMapDefaultPeaks">Default Peaks</option>
+                            <option value="colorMapBW">Black and White</option>
+                            <option value="colorMapBWRed">B&W Thermal</option>
+                            <option value="colorMapNightVision">Night Vision</option>
+                            <option value="colorMapNightVisionPeaks">Night Vision Peaks</option>
+                        </select>
 
-                                <button class="add-rtltcp-button">+</button>
+                        <label for="activityBarColorSchema">Activity Bar Color:</label>
+                        <select id="activityBarColorSchema">
+                            <option value="[255, 255, 0]">Yellow</option>
+                            <option value="[255, 0, 0]">Red</opton>
+                            <option value="[255, 180, 0]">Orange</option>
+                            <option value="[255, 255, 255]">White</option>
+                            <option value="[0, 255, 255]">Blue</option>
+                        </select>
+                    </div>
 
+                    <hr>
+
+                    <div class="settings-section">
+                        <h3>RTL-TCP</h3>
+                        <div class="rtlTCPDeviceSettingsContainer">
+                            
+                            <div style="display: none;" id="rtl-tcp-template">
+                                <div class="rtl-tcp-inputs" id="rtl-tcp-input{{ '{{id}}' }}">
+                                    <label for="rtlTCPSettingsIP{{ '{{id}}' }}">IP:</label>
+                                    <input type="text" class="rtlTCPSettingsIP" id="rtlTCPSettingsIP{{ '{{id}}' }}" value="127.0.0.1" placeholder="127.0.0.1">
+
+                                    <label for="rtlTCPSettingsPort{{ '{{id}}' }}">Port:</label>
+                                    <input type="text" class="rtlTCPSettingsPort" id="rtlTCPSettingsPort{{ '{{id}}' }}" value="{{ '{{port}}' }}" placeholder="6969">
+
+                                    <label for="rtlTCPSettingsGain{{ '{{id}}' }}">Gain:</label>
+                                    <input type="text" class="rtlTCPSettingsGain" id="rtlTCPSettingsGain{{ '{{id}}' }}" value="40" placeholder="0 - 40">
+
+                                    <br>
+
+                                    <label for="rtlTCPSettingsClientPort{{ '{{id}}' }}">Client Port:</label>
+                                    <input type="text" class="rtlTCPSettingsClientPort" id="rtlTCPSettingsClientPort{{ '{{id}}' }}" value="{{ '{{client-port}}' }}" placeholder="1234">
+
+                                    <label for="rtlTCPSettingsDevice{{ '{{id}}' }}">Device #:</label>
+                                    <select id="rtlTCPSettingsDevice{{ '{{id}}' }}" class="rtlTCPSettingsDeviceID">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+
+                                    <label for="rtlTCPSettingsColor{{ '{{id}}' }}">Color:</label>
+                                    <select id="rtlTCPSettingsColor{{ '{{id}}' }}" class="rtlTCPSettingsColor">
+                                        <option value="orange">Orange</option>
+                                        <option value="rgb(255, 0, 0)">Red</option>
+                                        <option value="rgb(0, 255, 50)">Green</option>
+                                        <option value="rgb(0, 255, 255)">Blue</option>
+                                        <option value="rgb(255, 100, 255)">Purple</option>
+                                    </select>
+
+                                    <button class="add-rtltcp-button">+</button>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
+        <div class="bottomToolbar">
+            <div class="toolbar-container">
+                <div class="toolbar-buttons">
+                    <button class="toolbar-button" title="Open SIGINT View" id="view-sigint-button">ↈ</button>
+                    <button class="toolbar-button" title="View stored systems" id="view-systems-button">↠</button>
+                    <button class="toolbar-button" title="Edit systems" id="edit-systems-button">⇌</button>
+                    <button class="toolbar-button" title="Get systems from Olympus" id="get-systems-button">Ø</button>
+                </div>
+
+                <div class="toolbar-items">
+
+                    <div class="active-system-container">
+                        <div class="infoContainer" id="activeSystemContainer">
+                            <div class="infoLabel" >
+                                <label>System</label><br>
+                            </div>
+
+                            <div class="infoList" id="activeSysInfo">
+                                
+                            </div>
+                        </div>
+
+                        <div class="infoContainer" id="activeDeviceContainer">
+                            <div class="infoLabel">
+                                <label>Device</label><br>
+                            </div>
+
+                             <div class="infoList" id="activeDevInfo">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="systems toolbar-item" id="systems-container">
+                        <div class="infoContainer" id="systemContainer">
+                            <div class="infoLabel" >
+                                <label>System</label><br>
+                            </div>
+
+                            <div class="infoList" id="sysInfo">
+                                
+                            </div>
+                        </div>
+
+                        <div class="infoContainer" id="nodeContainer">
+                            <div class="infoLabel">
+                                <label>Device</label><br>
+                            </div>
+
+                             <div class="infoList" id="devInfo">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="olympus-systems toolbar-item" id="olympus-sys-container">
+                        <div class="infoContainer" id="olympusSystemContainer">
+                            <div class="infoLabel">
+                                <label>Registered Systems</label><br>
+                            </div>
+
+                            <div class="infoList" id="olympusSysInfo">
+                                
+                            </div>
+                        </div>
+
+                        <div class="infoContainer" id="olympusDeviceContainer">
+                            <div class="infoLabel">
+                                <label>System Devices</label><br>
+                            </div>
+
+                             <div class="infoList" id="olympusDevInfo">
+
+                            </div>
+                        </div>
+
+                        <div class="olympus-system-buttons-container">
+                            <div class="olympus-system-buttons">
+                                <button class="olympus-systems-button" id="get-systems-in-scan">↯</button>
+                                <button class="olympus-systems-button" id="get-systems-in-range">↔</button>
+                            </div>
+                            <div class="olympus-system-buttons">
+                                <button class="olympus-systems-button" id="olympus-add-system-to-db">↓</button>
+                                <button class="olympus-systems-button" id="olympus-add-all-systems-to-db">⇊</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="add-system toolbar-item" id="add-system-container">
+
+                        <div class="system-db-buttons-container">
+                            <div class="add-system-buttons">
+                                <button class="database-button" id="edit-selected-system">⇀</button>
+                                <button class="database-button" id="write-selected-system">↽</button>
+                                <button class="database-button" id="delete-selected-system">⤫</button>
+                            </div>
+                            <div class="add-system-buttons">
+                                <button class="database-button" id="add-new-system">+</button>
+                            </div>
+                        </div>
+
+                        <div class="add-system-info infoContainer">
+                            <div class="infoLabel">
+                                <label>System Info</label>
+                            </div>
+                            <div id="add-system-info-container" class="infoList inputList">
+                            </div>
+                        </div>
+
+                        <div class="add-device-info infoContainer">
+                            <div class="infoLabel">
+                                <label>Device Info</label>
+                            </div>
+                            <div id="add-device-info-container" class="infoList inputList">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sigint-view-container toolbar-item" id="sigint-container">
+                        <div class="toolbar-vert-divider"></div>
+
+                        <div class="sigid-info infoContainer">
+                            <div class="infoLabel">
+                                <label>SIGID Reference</label>
+                            </div>
+
+                            <div id="sigid-info-container" class="infoList">
+                                
+                            </div>
+                        </div>
+
+                        <div class="signal-view infoContainer">
+                            <div class="infoLabel">
+                                <label>Signal Info</label>
+                            </div>
+
+                            <div id="signal-info-container" class="infoList">
+                                
+                            </div>
+                        </div>
+
+                        <div class="olympus-system-buttons-container">
+                            <div class="sigid-buttons">
+                                <button class="olympus-systems-button" id="get-sigid-from-range-btn">⇿</button>
+                            </div>
+                            <div class="sigid-buttons">
+                                <button class="olympus-systems-button" id="sigid-minimize-btn">-</button>
+                            </div>
+                        </div>
+                        <canvas id="zoomedInCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script> -->
     <script src="{{ url_for('static', filename='js/rtlDataDisplay.js') }}"></script>
 </body>
 </html>
