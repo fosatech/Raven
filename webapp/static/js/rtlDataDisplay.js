@@ -1289,7 +1289,7 @@ pushToDbButton.addEventListener('click', function(event) {
     createDatabaseInputFields();
 })
 
-addToDbButton.addEventListener('click', function(event) {
+addToDbButton.addEventListener('click', function(event) {\
     createDatabaseInputFields();
     refreshDatabase();
 })
