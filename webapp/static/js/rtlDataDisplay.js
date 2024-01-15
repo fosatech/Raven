@@ -525,10 +525,12 @@ document.getElementById("settingsBtn").onclick = function() {
     document.getElementById("settingsPopup").style.display = "block";
 };
 
-document.querySelector(".close-btn").onclick = function() {
-    document.getElementById("settingsPopup").style.display = "none";
-    document.getElementById("olympusPopup").style.display = "none";
-};
+document.querySelectorAll(".close-btn").forEach(button => {
+    button.addEventListener('click', function(event) {
+        document.getElementById("settingsPopup").style.display = "none";
+        document.getElementById("olympusPopup").style.display = "none";
+    })
+})
 
 // Close the popup if user clicks outside of it
 window.onclick = function(event) {
