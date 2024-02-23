@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  raven:
+    image: raven
+    ports:
+      - "5000:5000"
+    entrypoint:
+      - python
+      - raven.py
+      - --host=0.0.0.0

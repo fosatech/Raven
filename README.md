@@ -12,6 +12,7 @@ Before proceeding, ensure you have the following installed on your system.
 - `pip` + `virtualenv`
 - `rtl-sdr` package, including `rtl_tcp` and `rtl_power`
 - `hackrf_sweep` for the [HackRF](https://github.com/greatscottgadgets/hackrf)
+-  Optionally `docker`
 
 ## Installation and Setup
 
@@ -47,6 +48,33 @@ Before starting Rave, make sure that you have the backend tools like rtl_tcp, rt
    python raven.py
    ```
    Note: this currently starts the Flask development server. Proper WSGI server support is coming soon.
+
+## Docker
+
+Dockerfile and docker-compose.yml files have been added to the repo.
+
+To build and run application run the following command
+```bash
+./startContainer.sh
+```
+
+Additionally, the Docker image is built with GitHub actions on the main branch.
+
+If you open up the docker-compose.yml and modify this line:
+
+```yml
+    image: raven
+```
+
+to be
+
+```yml
+    image: ghcr.io/fosatech/raven:latest
+```
+
+Then run `docker compose run --publish 5000:5000 raven` to start the container
+
+This bash script will build the docker image from the Docker file and then run the container from the docker compose file.
 
 ## Usage
 
